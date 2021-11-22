@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useCallback } from 'react';
 import { AddModal } from './AddModal';
+import ReactMarkdown from 'react-markdown';
 
 export default function App() {
 
@@ -29,20 +30,20 @@ export default function App() {
   )
 
   const onAddModalConfirm = useCallback(
-    () => {
+    async (ownerName: string, repoName: string) => {
       let newRepo : Repo = {
         name: "test",
         content: "tes"
       }
 
+      console.log(repoName)
+      console.log(ownerName)
 
-      window.api.getRepoInfoFromGitHub("angband", "angband").then(() => {
-        console.log("done")
-      }
-      )
-
+      var readme = await window.api.getRepoInfoFromGitHub("angband", "angband")
+      newRepo.content = readme
 
       setRepos(repos => [...repos, newRepo])
+
       setAddModalOpen(false)
 
 
@@ -59,7 +60,11 @@ export default function App() {
           <Sidebar repos={repos} onTabClick={onTabClick}/>
         </Col>
         <Col className="bg-light border min-vh-100 px-2" xs="8">
+          <ReactMarkdown>
           {currentContent}
+
+
+          </ReactMarkdown>
         </Col>
         <Col className="bg-light border min-vh-100">Column</Col>
       </Row>

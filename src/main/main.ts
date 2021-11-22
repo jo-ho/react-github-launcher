@@ -56,10 +56,12 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 // @ts-ignore
   const response = await fetch(res.data.download_url);
 
+  // TODO error handling
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
 
   const body = await response.text();
   console.log(body)
+  return body
 
 })
 
