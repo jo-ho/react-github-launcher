@@ -32,8 +32,9 @@ export default function App() {
   const onAddModalConfirm = useCallback(
     async (ownerName: string, repoName: string) => {
       let newRepo : Repo = {
-        name: "test",
-        content: "tes"
+        name: repoName,
+        owner: ownerName,
+        content: ""
       }
 
       console.log(repoName)
@@ -43,6 +44,10 @@ export default function App() {
       newRepo.content = readme
 
       setRepos(repos => [...repos, newRepo])
+
+      console.log(repos)
+      // window.api.saveReposToFile(repos)
+
 
       setAddModalOpen(false)
 

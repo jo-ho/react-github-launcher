@@ -36,7 +36,7 @@ ipcMain.handle('renderer-init-done', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   console.log(event)
-  const repos: Repo[]  = JSON.parse(fs.readFileSync( __dirname + "/repos.json", 'utf-8'))
+  const repos: Repo[]  = JSON.parse(fs.readFileSync( __dirname + '/repos.json', 'utf-8'))
   return repos
   // event.reply('ipc-example', msgTemplate('pong'));
 });
@@ -62,6 +62,14 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
   const body = await response.text();
   console.log(body)
   return body
+
+})
+
+
+ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
+  console.log(event)
+  console.log(repos)
+  fs.writeFileSync( __dirname + '/repos.json', JSON.stringify(repos));
 
 })
 
