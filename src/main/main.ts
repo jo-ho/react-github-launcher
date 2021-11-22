@@ -17,6 +17,9 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import fs from 'fs';
+import { Octokit } from '@octokit/core';
+const fetch = require('node-fetch')
+const octokit = new Octokit()
 
 
 export default class AppUpdater {
@@ -39,9 +42,25 @@ ipcMain.handle('renderer-init-done', async (event, arg) => {
 });
 
 
-ipcMain.handle('on-add-repo', async (event, arg) => {
+ipcMain.handle('on-add-repo', async (event, owner, repo) => {
   console.log(event)
-  console.log(arg)
+  console.log(owner)
+  console.log(repo)
+
+  let res = await octokit.request('GET /repos/{owner}/{repo}/readme', {
+    owner: owner,
+    repo: repo,
+  })
+  console.log(res.data.download_url)
+
+// @ts-ignore
+  const response = await fetch(res.data.download_url);
+
+  if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
+
+  const body = await response.text();
+  console.log(body)
+
 })
 
 if (process.env.NODE_ENV === 'production') {
