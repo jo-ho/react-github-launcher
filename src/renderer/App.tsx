@@ -1,72 +1,105 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Row, Col } from 'reactstrap';
-import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useCallback } from 'react';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
+import { Component } from 'react'
 
-export default function App() {
 
-  const [repos , setRepos] = useState<Repo[]>([]);
-  const [currentContent, setCurrentContent] = useState<string>("")
-  const [addModalOpen, setAddModalOpen] = useState<boolean>(false)
+interface AppState {
+  repos: Repo[],
+  currentContent: string,
+  addModalOpen: boolean
+}
 
-  const onTabClick = useCallback(
-    (content) => { setCurrentContent(content) }, []
-  )
+
+export default class App extends Component<{}, AppState>  {
+
+  // const [repos , setRepos] = useState<Repo[]>([]);
+  // const [currentContent, setCurrentContent] = useState<string>("")
+  // const [addModalOpen, setAddModalOpen] = useState<boolean>(false)
+
+
+  constructor(props : any) {
+    super(props)
+    this.state = {
+      repos: [],
+      currentContent: "",
+      addModalOpen: false
+    }
+  }
 
   // componentDidMount
-  useEffect(() => {
-     window.api.getReposFromFile().then((res : Repo[]) => setRepos(res))
-     window.api.onShowAddModalRequested(() => {setAddModalOpen(true)})
+  componentDidMount()  {
+    //  window.api.getReposFromFile().then((res : Repo[]) => setRepos(res))
+     window.api.getReposFromFile().then(
+       (res : Repo[]) => {
+         this.setState({
+           repos: res
+         })
+       }
+      )
+     window.api.onShowAddModalRequested(() => {
+       this.setState({
+         addModalOpen: true
+       })
+      })
+  }
 
-  }, []);
+  onTabClick = (content: string) => {
+    this.setState({
+      currentContent: content
+    })
+  }
 
 
-  const onAddModalCancel = useCallback(
-    () => { setAddModalOpen(false)}, []
-  )
+  onAddModalCancel = () => {
+    this.setState({
+      addModalOpen: false
+    })
+  }
+  onAddModalConfirm = async (ownerName: string, repoName: string) => {
 
-  const onAddModalConfirm = useCallback(
-    async (ownerName: string, repoName: string) => {
       let newRepo : Repo = {
         name: repoName,
         owner: ownerName,
         content: ""
       }
 
-      console.log(repoName)
-      console.log(ownerName)
 
       var readme = await window.api.getRepoInfoFromGitHub("angband", "angband")
       newRepo.content = readme
 
-      setRepos(repos => [...repos, newRepo])
-
-      console.log(repos)
-      // window.api.saveReposToFile(repos)
-
-
-      setAddModalOpen(false)
-
-
-    }, []
-  )
+      this.setState({
+        repos: [...this.state.repos, newRepo]
+      }, () => {
+        console.log(this.state.repos)
+        window.api.saveReposToFile(this.state.repos)
+      })
 
 
-	return (
+
+
+      this.onAddModalCancel()
+
+
+
+}
+
+
+render() {
+  return (
     <div>
-      <AddModal isOpen={addModalOpen} onClickCancel={onAddModalCancel} onClickConfirm={onAddModalConfirm}/>
+      <AddModal isOpen={this.state.addModalOpen} onClickCancel={this.onAddModalCancel} onClickConfirm={this.onAddModalConfirm}/>
 
       <Row noGutters>
         <Col>
-          <Sidebar repos={repos} onTabClick={onTabClick}/>
+          <Sidebar repos={this.state.repos} onTabClick={this.onTabClick}/>
         </Col>
         <Col className="bg-light border min-vh-100 px-2" xs="8">
           <ReactMarkdown>
-          {currentContent}
+          {this.state.currentContent}
 
 
           </ReactMarkdown>
@@ -74,5 +107,6 @@ export default function App() {
         <Col className="bg-light border min-vh-100">Column</Col>
       </Row>
     </div>
-	);
+  );
+}
 }

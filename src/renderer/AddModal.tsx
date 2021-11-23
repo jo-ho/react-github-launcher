@@ -7,6 +7,9 @@ interface AddModalProps {
   onClickConfirm: (ownerName: string, repoName: string) => void
 }
 
+import React from 'react'
+
+
 export const AddModal = (props: AddModalProps) => {
 
   const [repoName, setRepoName] = useState("")
