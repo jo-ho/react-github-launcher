@@ -65,11 +65,23 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
 })
 
+ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
+  console.log(event)
+	var res = await octokit.request('GET /repos/{owner}/{repo}/releases/latest', {
+		owner: owner,
+		repo: repo
+	  })
+
+
+    console.log(res.data.assets)
+    return res.data.assets
+})
+
 
 ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
   console.log(event)
   console.log(repos)
-  fs.writeFileSync( __dirname + '/repos.json', JSON.stringify(repos));
+  fs.writeFileSync( __dirname + '/repos.json', JSON.stringify(repos, null, 2));
 
 })
 

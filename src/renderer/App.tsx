@@ -1,112 +1,145 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
-import { Component } from 'react'
-
+import { Component } from 'react';
 
 interface AppState {
-  repos: Repo[],
-  currentContent: string,
-  addModalOpen: boolean
+	repos: Repo[];
+	currentRepo: Repo;
+	addModalOpen: boolean;
+	dropDown: boolean;
+	currentAsset: any;
 }
 
-
-export default class App extends Component<{}, AppState>  {
-
-  // const [repos , setRepos] = useState<Repo[]>([]);
-  // const [currentContent, setCurrentContent] = useState<string>("")
-  // const [addModalOpen, setAddModalOpen] = useState<boolean>(false)
+export default class App extends Component<{}, AppState> {
 
 
-  constructor(props : any) {
-    super(props)
-    this.state = {
-      repos: [],
-      currentContent: "",
-      addModalOpen: false
-    }
-  }
+	constructor(props: any) {
+		super(props);
+		this.state = {
+			repos: [],
+			currentRepo: { owner: '', name: '', content: '', assets: [] },
+			addModalOpen: false,
+			dropDown: false,
+			currentAsset: null
+		};
+	}
 
-  // componentDidMount
-  componentDidMount()  {
-    //  window.api.getReposFromFile().then((res : Repo[]) => setRepos(res))
-     window.api.getReposFromFile().then(
-       (res : Repo[]) => {
-         this.setState({
-           repos: res
-         })
-       }
-      )
-     window.api.onShowAddModalRequested(() => {
-       this.setState({
-         addModalOpen: true
-       })
-      })
-  }
+	componentDidMount() {
+		window.api.getReposFromFile().then((res: Repo[]) => {
+			this.setState({
+				repos: res
+			});
+		});
+		window.api.onShowAddModalRequested(() => {
+			this.setState({
+				addModalOpen: true
+			});
+		});
+	}
 
-  onTabClick = (content: string) => {
-    this.setState({
-      currentContent: content
-    })
-  }
+	onTabClick = (repo: Repo) => {
+		this.setState({
+			currentRepo: repo
+		});
 
-
-  onAddModalCancel = () => {
-    this.setState({
-      addModalOpen: false
-    })
-  }
-  onAddModalConfirm = async (ownerName: string, repoName: string) => {
-
-      let newRepo : Repo = {
-        name: repoName,
-        owner: ownerName,
-        content: ""
-      }
-
-
-      var readme = await window.api.getRepoInfoFromGitHub("angband", "angband")
-      newRepo.content = readme
-
+    // reset currentAsset if selecting a different tab
+    if (repo != this.state.currentRepo) {
       this.setState({
-        repos: [...this.state.repos, newRepo]
-      }, () => {
-        console.log(this.state.repos)
-        window.api.saveReposToFile(this.state.repos)
-      })
+        currentAsset: null
+      });
 
+    }
 
+		console.log(repo);
+	};
 
+	onAddModalCancel = () => {
+		this.setState({
+			addModalOpen: false
+		});
+	};
+	onAddModalConfirm = async (ownerName: string, repoName: string) => {
+		let newRepo: Repo = {
+			name: repoName,
+			owner: ownerName,
+			content: '',
+			assets: []
+		};
 
-      this.onAddModalCancel()
+		var readme = await window.api.getRepoInfoFromGitHub('angband', 'angband');
+		var assets = await window.api.getRepoReleasesFromGitHub('angband', 'angband');
+		newRepo.content = readme;
+		newRepo.assets = assets;
 
+		console.log(assets);
 
+		this.setState(
+			{
+				repos: [ ...this.state.repos, newRepo ]
+			},
+			() => {
+				console.log(this.state.repos);
+				window.api.saveReposToFile(this.state.repos);
+			}
+		);
 
-}
+		this.onAddModalCancel();
+	};
 
+	toggleDropdown = () => {
+		this.setState({
+			dropDown: !this.state.dropDown
+		});
+	};
 
-render() {
-  return (
-    <div>
-      <AddModal isOpen={this.state.addModalOpen} onClickCancel={this.onAddModalCancel} onClickConfirm={this.onAddModalConfirm}/>
+	setAsset = (asset: any) => {
+		this.setState({
+			currentAsset: asset
+		});
+	};
 
-      <Row noGutters>
-        <Col>
-          <Sidebar repos={this.state.repos} onTabClick={this.onTabClick}/>
-        </Col>
-        <Col className="bg-light border min-vh-100 px-2" xs="8">
-          <ReactMarkdown>
-          {this.state.currentContent}
+	render() {
+		return (
+			<div>
+				<AddModal
+					isOpen={this.state.addModalOpen}
+					onClickCancel={this.onAddModalCancel}
+					onClickConfirm={this.onAddModalConfirm}
+				/>
 
-
-          </ReactMarkdown>
-        </Col>
-        <Col className="bg-light border min-vh-100">Column</Col>
-      </Row>
-    </div>
-  );
-}
+				<Row noGutters>
+					<Col>
+						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
+					</Col>
+					<Col className="bg-light border min-vh-100 px-2" xs="8">
+						<ReactMarkdown>{this.state.currentRepo.content}</ReactMarkdown>
+					</Col>
+					<Col className="bg-light border min-vh-100">
+						{this.state.currentRepo.assets !== undefined ? (
+							<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown}>
+								<DropdownToggle caret>
+									{this.state.currentAsset !== null ? this.state.currentAsset.name : 'Select'}
+								</DropdownToggle>
+								<DropdownMenu dark>
+									{this.state.currentRepo.assets.map((element) => {
+										return (
+											<DropdownItem onClick={() => this.setAsset(element)}>
+												{element.browser_download_url}
+											</DropdownItem>
+										);
+									})}
+								</DropdownMenu>
+							</Dropdown>
+						) : (
+							'Column'
+						)}
+					</Col>
+				</Row>
+			</div>
+		);
+	}
 }

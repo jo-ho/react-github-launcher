@@ -3,6 +3,7 @@ export interface Api {
   onShowAddModalRequested: (callback: () => void) => void,
   getRepoInfoFromGitHub: (owner: string, repo: string) => Promise<string>,
   saveReposToFile: (repos: Repo[]) => Promise<void>
+  getRepoReleasesFromGitHub: (owner: string, repo: string) => Promise<Array<any>>
 }
 
 declare global {
@@ -13,7 +14,8 @@ declare global {
   interface Repo {
     owner: string,
     name: string,
-    content: string
+    content: string,
+    assets: Array<any>
   }
 
 

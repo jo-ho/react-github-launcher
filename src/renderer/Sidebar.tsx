@@ -2,7 +2,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 
 interface SidebarProps {
   repos: Repo[]
-  onTabClick: (repo:any) => void
+  onTabClick: (repo: Repo) => void
 }
 
 
@@ -12,7 +12,7 @@ export const Sidebar = (props: SidebarProps) => {
 			{props.repos.map((element) => {
 				return (
 					<NavItem>
-						<NavLink onClick={ () => props.onTabClick(element.content)} >{element.name}</NavLink>
+						<NavLink onClick={ () => props.onTabClick(element)} >{element.name}</NavLink>
 					</NavItem>
 				);
 			})}

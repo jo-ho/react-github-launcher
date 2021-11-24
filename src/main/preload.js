@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('api', {
     ipcRenderer.on('show-add-modal', callback);
   },
   getRepoInfoFromGitHub: (owner, repo) => ipcRenderer.invoke('on-add-repo', owner, repo),
+  getRepoReleasesFromGitHub: (owner, repo) => ipcRenderer.invoke('on-get-releases-request', owner, repo),
   saveReposToFile: (repos) => ipcRenderer.invoke("on-save-repos-to-file-request", repos)
 
 });
