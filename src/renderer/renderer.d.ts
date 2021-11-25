@@ -4,7 +4,7 @@ export interface Api {
   getRepoInfoFromGitHub: (owner: string, repo: string) => Promise<string>,
   saveReposToFile: (repos: Repo[]) => Promise<void>
   getRepoReleasesFromGitHub: (owner: string, repo: string) => Promise<Array<any>>,
-  downloadAsset: (downloadLink: string) => Promise<void>
+  downloadAsset: (asset: any) => Promise<void>
 }
 
 declare global {
@@ -18,6 +18,7 @@ declare global {
     content: string,
     assets: Array<any>
   }
+
 
 
 

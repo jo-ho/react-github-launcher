@@ -17,8 +17,12 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import fs from 'fs';
+import util from 'util'
+import stream from 'stream'
 import { Octokit } from '@octokit/core';
+import extract from 'extract-zip';
 import '../config'
+
 const fetch = require('node-fetch')
 const octokit = new Octokit()
 
@@ -66,9 +70,35 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
 })
 
-ipcMain.handle('on-download-asset-request', async (event, downloadLink) => {
+ipcMain.handle('on-download-asset-request', async (event, asset) => {
   console.log(event)
-  console.log(downloadLink)
+  console.log(asset)
+
+  const streamPipeline = util.promisify(stream.pipeline);
+
+
+  const response = await fetch(asset.browser_download_url);
+
+  if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
+
+
+  await streamPipeline(response.body, fs.createWriteStream(globalThis.app.gamesFolderPath + asset.name));
+
+
+  if (asset.content_type == "application/zip") {
+
+
+  try {
+		await extract(globalThis.app.gamesFolderPath + asset.name, { dir: path.join(process.cwd(), './games') })
+		console.log('Extraction complete')
+
+
+	  } catch (err) {
+		// handle any errors
+		console.log(err)
+	  }
+  }
+
 } )
 
 ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {

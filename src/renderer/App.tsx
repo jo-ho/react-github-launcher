@@ -13,6 +13,7 @@ interface AppState {
 	addModalOpen: boolean;
 	dropDown: boolean;
 	currentAsset: any;
+  downloadBtnDisabled: boolean;
 }
 
 
@@ -27,7 +28,9 @@ export default class App extends Component<{}, AppState> {
 			currentRepo: { owner: '', name: '', content: '', assets: [] },
 			addModalOpen: false,
 			dropDown: false,
-			currentAsset: null
+			currentAsset: null,
+      downloadBtnDisabled: false
+
 		};
 	}
 
@@ -105,8 +108,18 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-  onClickDownloadAsset = async () => {
-    await window.api.downloadAsset(this.state.currentAsset.browser_download_url)
+  onClickDownloadAsset =  () => {
+    this.setState({
+      downloadBtnDisabled : true
+    }, async () => {
+      await window.api.downloadAsset(this.state.currentAsset)
+      this.setState({
+        downloadBtnDisabled : false
+      })
+
+    })
+
+
   }
 
 	render() {
@@ -126,9 +139,9 @@ export default class App extends Component<{}, AppState> {
 						<ReactMarkdown>{this.state.currentRepo.content}</ReactMarkdown>
 					</Col>
 					<Col className="bg-dark border min-vh-100">
-						{this.state.currentRepo.assets !== undefined ? (
+						{this.state.currentRepo.assets.length > 0 ? (
               <div>
-							<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown} size="sm">
+							<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown} size="sm" ge>
 								<DropdownToggle caret>
 									{this.state.currentAsset !== null ? this.state.currentAsset.name : 'Select'}
 								</DropdownToggle>
@@ -142,7 +155,7 @@ export default class App extends Component<{}, AppState> {
 									})}
 								</DropdownMenu>
 							</Dropdown>
-              <Button onClick={this.onClickDownloadAsset} size="sm" color="primary">Download</Button>
+              <Button onClick={this.onClickDownloadAsset} disabled={this.state.downloadBtnDisabled || this.state.currentAsset === null} size="sm" color="primary">Download</Button>
               </div>
 						) : (
 							'Column'

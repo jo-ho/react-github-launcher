@@ -1,3 +1,4 @@
+
 // define our parent property accessible via globalThis. Also apply the TypeScript type.
 var app: globalAppVariables;
 
@@ -5,6 +6,7 @@ var app: globalAppVariables;
 type globalAppVariables = {
   repoJsonPath: string;
   gamesFolderPath: string
+
 };
 
 // set the values.
