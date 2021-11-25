@@ -18,6 +18,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import fs from 'fs';
 import { Octokit } from '@octokit/core';
+import '../config'
 const fetch = require('node-fetch')
 const octokit = new Octokit()
 
@@ -65,6 +66,11 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
 })
 
+ipcMain.handle('on-download-asset-request', async (event, downloadLink) => {
+  console.log(event)
+  console.log(downloadLink)
+} )
+
 ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
   console.log(event)
 	var res = await octokit.request('GET /repos/{owner}/{repo}/releases/latest', {
@@ -81,7 +87,7 @@ ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
 ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
   console.log(event)
   console.log(repos)
-  fs.writeFileSync( __dirname + '/repos.json', JSON.stringify(repos, null, 2));
+  fs.writeFileSync( globalThis.app.repoJsonPath, JSON.stringify(repos, null, 2));
 
 })
 

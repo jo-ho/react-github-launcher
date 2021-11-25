@@ -3,7 +3,8 @@ export interface Api {
   onShowAddModalRequested: (callback: () => void) => void,
   getRepoInfoFromGitHub: (owner: string, repo: string) => Promise<string>,
   saveReposToFile: (repos: Repo[]) => Promise<void>
-  getRepoReleasesFromGitHub: (owner: string, repo: string) => Promise<Array<any>>
+  getRepoReleasesFromGitHub: (owner: string, repo: string) => Promise<Array<any>>,
+  downloadAsset: (downloadLink: string) => Promise<void>
 }
 
 declare global {

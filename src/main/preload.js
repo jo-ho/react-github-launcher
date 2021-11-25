@@ -9,7 +9,9 @@ contextBridge.exposeInMainWorld('api', {
   },
   getRepoInfoFromGitHub: (owner, repo) => ipcRenderer.invoke('on-add-repo', owner, repo),
   getRepoReleasesFromGitHub: (owner, repo) => ipcRenderer.invoke('on-get-releases-request', owner, repo),
-  saveReposToFile: (repos) => ipcRenderer.invoke("on-save-repos-to-file-request", repos)
+  saveReposToFile: (repos) => ipcRenderer.invoke("on-save-repos-to-file-request", repos),
+  downloadAsset: (downloadLink) => ipcRenderer.invoke("on-download-asset-request", downloadLink)
+
 
 });
 

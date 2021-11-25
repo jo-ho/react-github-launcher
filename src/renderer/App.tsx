@@ -1,10 +1,11 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import { Row, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { Row, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
 import { Component } from 'react';
+import '../config'
 
 interface AppState {
 	repos: Repo[];
@@ -13,6 +14,8 @@ interface AppState {
 	dropDown: boolean;
 	currentAsset: any;
 }
+
+
 
 export default class App extends Component<{}, AppState> {
 
@@ -102,6 +105,10 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
+  onClickDownloadAsset = async () => {
+    await window.api.downloadAsset(this.state.currentAsset.browser_download_url)
+  }
+
 	render() {
 		return (
 			<div>
@@ -118,9 +125,10 @@ export default class App extends Component<{}, AppState> {
 					<Col className="bg-light border min-vh-100 px-2" xs="8">
 						<ReactMarkdown>{this.state.currentRepo.content}</ReactMarkdown>
 					</Col>
-					<Col className="bg-light border min-vh-100">
+					<Col className="bg-dark border min-vh-100">
 						{this.state.currentRepo.assets !== undefined ? (
-							<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown}>
+              <div>
+							<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown} size="sm">
 								<DropdownToggle caret>
 									{this.state.currentAsset !== null ? this.state.currentAsset.name : 'Select'}
 								</DropdownToggle>
@@ -134,6 +142,8 @@ export default class App extends Component<{}, AppState> {
 									})}
 								</DropdownMenu>
 							</Dropdown>
+              <Button onClick={this.onClickDownloadAsset} size="sm" color="primary">Download</Button>
+              </div>
 						) : (
 							'Column'
 						)}
