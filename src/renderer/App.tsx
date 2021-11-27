@@ -173,7 +173,7 @@ export default class App extends Component<{}, AppState> {
 							</Dropdown>
               <Button onClick={this.onClickDownloadAsset} disabled={this.state.downloadBtnDisabled || this.state.currentAsset === null} size="sm" color="primary">Download</Button>
               <Button onClick={this.onClickStartBtn} size="sm" color="primary">Start</Button>
-              <Button onClick={this.onClickLaunchBtn} size="sm" color="primary">Launch</Button>
+              <Button onClick={this.onClickLaunchBtn} disabled={this.state.currentRepo.pathToExe === "" } size="sm" color="primary">Launch</Button>
               </div>
 						) : (
 							'Column'
