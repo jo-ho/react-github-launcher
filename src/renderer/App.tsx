@@ -14,6 +14,7 @@ interface AppState {
 	dropDown: boolean;
 	currentAsset: any;
   downloadBtnDisabled: boolean;
+  exePath: string
 }
 
 
@@ -29,7 +30,8 @@ export default class App extends Component<{}, AppState> {
 			addModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
-      downloadBtnDisabled: false
+      downloadBtnDisabled: false,
+      exePath: ""
 
 		};
 	}
@@ -128,6 +130,9 @@ export default class App extends Component<{}, AppState> {
       if (!result.canceled) {
         console.log(result.filePaths)
         this.state.currentRepo.pathToExe = result.filePaths[0]
+        this.setState({
+          exePath: result.filePaths[0]
+        })
         window.api.saveReposToFile(this.state.repos);
         console.log(this.state.currentRepo.pathToExe)
       }
@@ -135,7 +140,7 @@ export default class App extends Component<{}, AppState> {
   }
 
   onClickLaunchBtn = async() => {
-    window.api.launchExeFile(this.state.currentRepo.pathToExe)
+    window.api.launchExeFile(this.state.exePath)
   }
 
 	render() {
@@ -172,8 +177,8 @@ export default class App extends Component<{}, AppState> {
 								</DropdownMenu>
 							</Dropdown>
               <Button onClick={this.onClickDownloadAsset} disabled={this.state.downloadBtnDisabled || this.state.currentAsset === null} size="sm" color="primary">Download</Button>
-              <Button onClick={this.onClickStartBtn} size="sm" color="primary">Start</Button>
-              <Button onClick={this.onClickLaunchBtn} disabled={this.state.currentRepo.pathToExe === "" } size="sm" color="primary">Launch</Button>
+              <Button onClick={this.onClickStartBtn} size="sm" color="primary">Select exe</Button>
+              <Button onClick={this.onClickLaunchBtn} disabled={this.state.exePath === "" } size="sm" color="primary">Launch</Button>
               </div>
 						) : (
 							'Column'
