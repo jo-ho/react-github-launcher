@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -21,7 +21,9 @@ import util from 'util'
 import stream from 'stream'
 import { Octokit } from '@octokit/core';
 import extract from 'extract-zip';
+
 import '../config'
+import { execFile } from 'child_process';
 
 const fetch = require('node-fetch')
 const octokit = new Octokit()
@@ -37,11 +39,22 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle('renderer-init-done', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
+ipcMain.handle('on-choose-exe-request', async (event) => {
   console.log(event)
-  const repos: Repo[]  = JSON.parse(fs.readFileSync( __dirname + '/repos.json', 'utf-8'))
+ return dialog.showOpenDialog({ properties: ['openFile'] })
+//  .then(result => {
+//   console.log(result.canceled)
+//   console.log(result.filePaths)
+// }).catch(err => {
+//   console.log(err)
+// })
+
+
+})
+
+ipcMain.handle('renderer-init-done', async (event) => {
+  console.log(event)
+  const repos: Repo[]  = JSON.parse(fs.readFileSync( process.cwd() + '/repos.json', 'utf-8'))
   return repos
   // event.reply('ipc-example', msgTemplate('pong'));
 });
@@ -119,6 +132,13 @@ ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
   console.log(repos)
   fs.writeFileSync( globalThis.app.repoJsonPath, JSON.stringify(repos, null, 2));
 
+})
+
+ipcMain.handle('on-launch-exe-request', async (event, path) => {
+
+  console.log(event)
+  console.log("launch", path)
+  execFile(path)
 })
 
 if (process.env.NODE_ENV === 'production') {

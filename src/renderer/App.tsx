@@ -25,7 +25,7 @@ export default class App extends Component<{}, AppState> {
 		super(props);
 		this.state = {
 			repos: [],
-			currentRepo: { owner: '', name: '', content: '', assets: [] },
+			currentRepo: { owner: '', name: '', content: '', assets: [], pathToExe: '' },
 			addModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
@@ -73,7 +73,8 @@ export default class App extends Component<{}, AppState> {
 			name: repoName,
 			owner: ownerName,
 			content: '',
-			assets: []
+			assets: [],
+      pathToExe: ''
 		};
 
 		var readme = await window.api.getRepoInfoFromGitHub('angband', 'angband');
@@ -122,6 +123,21 @@ export default class App extends Component<{}, AppState> {
 
   }
 
+  onClickStartBtn = async () => {
+    window.api.chooseExeFile().then(result => {
+      if (!result.canceled) {
+        console.log(result.filePaths)
+        this.state.currentRepo.pathToExe = result.filePaths[0]
+        window.api.saveReposToFile(this.state.repos);
+        console.log(this.state.currentRepo.pathToExe)
+      }
+    })
+  }
+
+  onClickLaunchBtn = async() => {
+    window.api.launchExeFile(this.state.currentRepo.pathToExe)
+  }
+
 	render() {
 		return (
 			<div>
@@ -156,6 +172,8 @@ export default class App extends Component<{}, AppState> {
 								</DropdownMenu>
 							</Dropdown>
               <Button onClick={this.onClickDownloadAsset} disabled={this.state.downloadBtnDisabled || this.state.currentAsset === null} size="sm" color="primary">Download</Button>
+              <Button onClick={this.onClickStartBtn} size="sm" color="primary">Start</Button>
+              <Button onClick={this.onClickLaunchBtn} size="sm" color="primary">Launch</Button>
               </div>
 						) : (
 							'Column'
