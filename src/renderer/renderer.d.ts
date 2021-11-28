@@ -1,5 +1,6 @@
 export interface Api {
   getReposFromFile: () => Promise<Repo[]>,
+  getRepo: (owner: string, repo: string) => Promise<boolean>
   onShowAddModalRequested: (callback: () => void) => void,
   getRepoInfoFromGitHub: (owner: string, repo: string) => Promise<string>,
   saveReposToFile: (repos: Repo[]) => Promise<void>

@@ -1,13 +1,14 @@
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
 import { useState } from 'react'
 
 interface AddModalProps {
 	isOpen: boolean;
 	onClickCancel: () => void;
   onClickConfirm: (ownerName: string, repoName: string) => void
+  errorMsg: string
+  errorMsgToggle: () => void
 }
 
-import React from 'react'
 
 
 export const AddModal = (props: AddModalProps) => {
@@ -34,6 +35,7 @@ export const AddModal = (props: AddModalProps) => {
 					<Input onChange={handleOwnerInputChange} />
 
 					<Input onChange={handleNameInputChange} />
+          <Alert toggle={props.errorMsgToggle} isOpen={props.errorMsg !== ""} color="danger">{props.errorMsg}</Alert>
 				</ModalBody>
 
 				<ModalFooter>

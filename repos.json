@@ -107,7 +107,7 @@
         "browser_download_url": "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3.tar.gz"
       }
     ],
-    "pathToExe": "/home/jo/projects/react-github-launcher/games/Angband-4.2.3/angband.exe"
+    "pathToExe": "/mnt/c/projects/github-launcher/games/Angband-4.2.3/angband.exe"
   },
   {
     "name": "",
@@ -218,5 +218,149 @@
       }
     ],
     "pathToExe": "/home/jo/projects/react-github-launcher/games/Angband-4.2.3/angband.exe"
+  },
+  {
+    "name": "The-Powder-Toy",
+    "owner": "The-Powder-Toy",
+    "content": "The Powder Toy - July 2021\n==========================\n\nGet the latest version [from the Powder Toy website](https://powdertoy.co.uk/Download.html).\n\nTo use online features such as saving, you need to [register an account](https://powdertoy.co.uk/Register.html).\nYou can also visit [the official TPT forum](https://powdertoy.co.uk/Discussions/Categories/Index.html).\n\nHave you ever wanted to blow something up? Or maybe you always dreamt of operating an atomic power plant? Do you have a will to develop your own CPU? The Powder Toy lets you to do all of these, and even more!\n\nThe Powder Toy is a free physics sandbox game, which simulates air pressure and velocity, heat, gravity and a countless number of interactions between different substances! The game provides you with various building materials, liquids, gases and electronic components which can be used to construct complex machines, guns, bombs, realistic terrains and almost anything else. You can then mine them and watch cool explosions, add intricate wirings, play with little stickmen or operate your machine. You can browse and play thousands of different saves made by the community or upload your own – we welcome your creations!\n\nThere is a Lua API – you can automate your work or even make plugins for the game. The Powder Toy is free and the source code is distributed under the GNU General Public License, so you can modify the game yourself or help with development.\n\nBuild instructions\n===========================================================================\n\nSee the _Powder Toy Development Help_ section [on the main page of the wiki](https://powdertoy.co.uk/Wiki/W/Main_Page.html).\n\nThanks\n===========================================================================\n\n* Stanislaw K Skowronek - Designed the original\n* Simon Robertshaw\n* Skresanov Savely\n* cracker64\n* Catelite\n* Bryan Hoyle\n* Nathan Cousins\n* jacksonmj\n* Felix Wallin\n* Lieuwe Mosch\n* Anthony Boot\n* Me4502\n* MaksProg\n* jacob1\n* mniip\n* LBPHacker\n\nLibraries and other assets used\n===========================================================================\n\n* [BSON](https://github.com/interactive-matter/bson-c)\n* [bzip2](http://www.bzip.org/)\n* [FFTW](http://fftw.org/)\n* [JsonCpp](https://github.com/open-source-parsers/jsoncpp)\n* [libcurl](https://curl.se/libcurl/)\n* [Lua](https://www.lua.org/)\n* [LuaJIT](https://luajit.org/)\n* [LuaSocket](http://w3.impa.br/~diego/software/luasocket/)\n* [Mallangche](https://github.com/JammPark/Mallangche)\n* [SDL](https://libsdl.org/)\n* [zlib](https://www.zlib.net/)\n\nInstructions\n===========================================================================\n\nClick on the elements with the mouse and draw in the field, like in MS Paint. The rest of the game is learning what happens next.\n\n\nControls\n===========================================================================\n\n| Key                     | Action                                                          |\n| ----------------------- | --------------------------------------------------------------- |\n| TAB                     | Switch between circle/square/triangle brush                     |\n| Space                   | Pause                                                           |\n| Q / Esc                 | Quit                                                            |\n| Z                       | Zoom                                                            |\n| S                       | Save stamp (use with Ctrl when STK2 is out)                     |\n| L                       | Load last saved stamp                                           |\n| K                       | Stamp library                                                   |\n| 0-9                     | Set view mode                                                   |\n| P / F2                  | Save screenshot as .png                                         |\n| E                       | Bring up element search                                         |\n| F                       | Pause and step to next frame                                    |\n| G                       | Increase grid size                                              |\n| Shift + G               | Decrease grid size                                              |\n| H                       | Show/Hide HUD                                                   |\n| Ctrl + H / F1           | Show intro text                                                 |\n| D / F3                  | Debug mode (use with Ctrl when STK2 is out)                     |\n| I                       | Invert Pressure and Velocity map                                |\n| W                       | Cycle gravity modes (use with Ctrl when STK2 is out)            |\n| Y                       | Cycle air modes                                                 |\n| B                       | Enter decoration editor menu                                    |\n| Ctrl + B                | Toggle decorations on/off                                       |\n| N                       | Toggle Newtonian Gravity on/off                                 |\n| U                       | Toggle ambient heat on/off                                      |\n| Ctrl + I                | Install powder toy, for loading saves/stamps by double clicking |\n| Backtick                | Toggle console                                                  |\n| =                       | Reset pressure and velocity map                                 |\n| Ctrl + =                | Reset Electricity                                               |\n| \\[                      | Decrease brush size                                             |\n| \\]                      | Increase brush size                                             |\n| Alt + \\[                | Decrease brush size by 1                                        |\n| Alt + \\]                | Increase brush size by 1                                        |\n| Ctrl + C/V/X            | Copy/Paste/Cut                                                  |\n| Ctrl + Z                | Undo                                                            |\n| Ctrl + Y                | Redo                                                            |\n| Ctrl + Cursor drag      | Rectangle                                                       |\n| Shift + Cursor drag     | Line                                                            |\n| Middle click            | Sample element                                                  |\n| Alt + Left click        | Sample element                                                  |\n| Mouse scroll            | Change brush size                                               |\n| Ctrl + Mouse scroll     | Change vertical brush size                                      |\n| Shift + Mouse scroll    | Change horizontal brush size                                    |\n| Shift + R               | Horizontal mirror for selected area when pasting stamps         |\n| Ctrl + Shift + R        | Vertical mirror for selected area when pasting stamps           |\n| R                       | Rotate selected area counterclockwise when pasting stamps       |\n\n\n\nCommand Line\n---------------------------------------------------------------------------\n\n| Command               | Description                                      | Example                           |\n| --------------------- | ------------------------------------------------ | --------------------------------- |\n| `scale:SIZE`          | Change window scale factor                       | `scale:2`                         |\n| `kiosk`               | Fullscreen mode                                  |                                   |\n| `proxy:SERVER[:PORT]` | Proxy server to use                              | `proxy:wwwcache.lancs.ac.uk:8080` |\n| `open FILE`           | Opens the file as a stamp or game save           |                                   |\n| `ddir DIRECTORY`      | Directory used for saving stamps and preferences |                                   |\n| `ptsave:SAVEID`       | Open online save, used by ptsave: URLs           | `ptsave:2198`                     |\n| `disable-network`     | Disables internet connections                    |                                   |\n| `redirect`            | Redirects output to stdout.txt / stderr.txt      |                                   |\n",
+    "assets": [
+      {
+        "url": "https://api.github.com/repos/The-Powder-Toy/The-Powder-Toy/releases/assets/43589299",
+        "id": 43589299,
+        "node_id": "MDEyOlJlbGVhc2VBc3NldDQzNTg5Mjk5",
+        "name": "powder-v96.2.350-i686-win-msvc-static.exe",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 5593600,
+        "download_count": 129,
+        "created_at": "2021-08-30T02:57:16Z",
+        "updated_at": "2021-08-30T02:57:17Z",
+        "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-i686-win-msvc-static.exe"
+      },
+      {
+        "url": "https://api.github.com/repos/The-Powder-Toy/The-Powder-Toy/releases/assets/43589289",
+        "id": 43589289,
+        "node_id": "MDEyOlJlbGVhc2VBc3NldDQzNTg5Mjg5",
+        "name": "powder-v96.2.350-x86_64-lin-gcc-static",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 10949808,
+        "download_count": 80,
+        "created_at": "2021-08-30T02:57:05Z",
+        "updated_at": "2021-08-30T02:57:06Z",
+        "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-lin-gcc-static"
+      },
+      {
+        "url": "https://api.github.com/repos/The-Powder-Toy/The-Powder-Toy/releases/assets/43589345",
+        "id": 43589345,
+        "node_id": "MDEyOlJlbGVhc2VBc3NldDQzNTg5MzQ1",
+        "name": "powder-v96.2.350-x86_64-mac-gcc-static",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 10535528,
+        "download_count": 36,
+        "created_at": "2021-08-30T02:59:05Z",
+        "updated_at": "2021-08-30T02:59:07Z",
+        "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-mac-gcc-static"
+      },
+      {
+        "url": "https://api.github.com/repos/The-Powder-Toy/The-Powder-Toy/releases/assets/43589306",
+        "id": 43589306,
+        "node_id": "MDEyOlJlbGVhc2VBc3NldDQzNTg5MzA2",
+        "name": "powder-v96.2.350-x86_64-win-msvc-static.exe",
+        "label": "",
+        "uploader": {
+          "login": "github-actions[bot]",
+          "id": 41898282,
+          "node_id": "MDM6Qm90NDE4OTgyODI=",
+          "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+          "html_url": "https://github.com/apps/github-actions",
+          "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+          "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+          "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+          "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+          "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+          "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "content_type": "application/zip",
+        "state": "uploaded",
+        "size": 5880832,
+        "download_count": 246,
+        "created_at": "2021-08-30T02:57:43Z",
+        "updated_at": "2021-08-30T02:57:44Z",
+        "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-win-msvc-static.exe"
+      }
+    ],
+    "pathToExe": "/home/jo/projects/react-github-launcher/games/powder-v96.2.350-x86_64-win-msvc-static.exe"
   }
 ]

@@ -59,6 +59,22 @@ ipcMain.handle('renderer-init-done', async (event) => {
   // event.reply('ipc-example', msgTemplate('pong'));
 });
 
+ipcMain.handle('on-get-repo', async (event, owner, repo) => {
+  console.log(event)
+  console.log(owner)
+  console.log(repo)
+
+
+  let res = await octokit.request('GET /repos/{owner}/{repo}', {
+    owner: owner,
+    repo: repo,
+  })
+
+  console.log(res)
+  return res.status == 200
+
+})
+
 
 ipcMain.handle('on-add-repo', async (event, owner, repo) => {
   console.log(event)
