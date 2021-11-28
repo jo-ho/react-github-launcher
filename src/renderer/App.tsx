@@ -80,37 +80,38 @@ export default class App extends Component<{}, AppState> {
 				pathToExe: ''
 			};
 
-			try {
-				var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
-				newRepo.content = readme;
+
 				try {
-					var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
-					newRepo.assets = assets;
+          var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
+          newRepo.content = readme;
 
-					console.log(assets);
-
-					this.setState(
-						{
-							repos: [ ...this.state.repos, newRepo ]
-						},
-						() => {
-							console.log(this.state.repos);
-							window.api.saveReposToFile(this.state.repos);
-						}
-					);
-					this.onAddModalCancel();
 				} catch (error) {
-					this.setState({
-						addModalErrorMsg: 'Releases not found'
-					});
-					console.log(error, 'Releases not found');
-				}
-			} catch (error) {
-				this.setState({
-					addModalErrorMsg: 'Readme not found'
-				});
-				console.log(error, 'readme not found');
-			}
+
+					console.log(error, 'Readme not found');
+				} finally {
+          try {
+            var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
+            newRepo.assets = assets;
+
+            console.log(assets);
+
+            this.setState(
+              {
+                repos: [ ...this.state.repos, newRepo ]
+              },
+              () => {
+                console.log(this.state.repos);
+                window.api.saveReposToFile(this.state.repos);
+              }
+            );
+            this.onAddModalCancel();
+          } catch (error) {
+            this.setState({
+              addModalErrorMsg: 'Releases not found'
+            });
+            console.log(error, 'Releases not found');
+          }
+        }
 		} catch (error) {
 			this.setState({
 				addModalErrorMsg: 'Repo not found'
@@ -179,13 +180,12 @@ export default class App extends Component<{}, AppState> {
 					onClickCancel={this.onAddModalCancel}
 					onClickConfirm={this.onAddModalConfirm}
 				/>
-
 				<Row noGutters>
-					<Col>
+					<Col className="bg-dark border min-vh-100">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
 					</Col>
-					<Col className="bg-light border min-vh-100 px-2" xs="8">
-						<ReactMarkdown>{this.state.currentRepo.content}</ReactMarkdown>
+					<Col className="bg-light border  min-vh-100 px-2" xs="8">
+						<ReactMarkdown >{this.state.currentRepo.content}</ReactMarkdown>
 					</Col>
 					<Col className="bg-dark border min-vh-100">
 						{this.state.currentRepo.assets.length > 0 ? (
