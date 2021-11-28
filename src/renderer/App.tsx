@@ -56,6 +56,9 @@ export default class App extends Component<{}, AppState> {
 			this.setState({
 				currentAsset: null
 			});
+      this.setState({
+        exePath: repo.pathToExe
+      })
 		}
 
 		console.log(repo);
