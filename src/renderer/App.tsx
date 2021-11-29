@@ -1,11 +1,12 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import { Row, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button } from 'reactstrap';
+import {  Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button, Container, Row,   } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
 import { Component } from 'react';
 import '../config';
+import './App.css'
 
 interface AppState {
 	repos: Repo[];
@@ -172,7 +173,7 @@ export default class App extends Component<{}, AppState> {
 
 	render() {
 		return (
-			<div>
+      <Container fluid >
 				<AddModal
 					isOpen={this.state.addModalOpen}
 					errorMsg={this.state.addModalErrorMsg}
@@ -180,14 +181,16 @@ export default class App extends Component<{}, AppState> {
 					onClickCancel={this.onAddModalCancel}
 					onClickConfirm={this.onAddModalConfirm}
 				/>
-				<Row noGutters>
-					<Col className="bg-dark border min-vh-100">
+        <Row>
+					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
 					</Col>
-					<Col className="bg-light border  min-vh-100 px-2" xs="8">
-						<ReactMarkdown >{this.state.currentRepo.content}</ReactMarkdown>
+					<Col className="content" xs="8">
+						<ReactMarkdown  >
+               {this.state.currentRepo.content}
+              </ReactMarkdown>
 					</Col>
-					<Col className="bg-dark border min-vh-100">
+					<Col className="bg-dark actions" xs="2">
 						{this.state.currentRepo.assets.length > 0 ? (
 							<div>
 								<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown} size="sm" ge>
@@ -228,8 +231,8 @@ export default class App extends Component<{}, AppState> {
 							'Column'
 						)}
 					</Col>
-				</Row>
-			</div>
+          </Row>
+        </Container>
 		);
 	}
 }
