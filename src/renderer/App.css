@@ -8,9 +8,17 @@
   height:100%;
   overflow: hidden;
 }
-
+.btn {
+  white-space:normal !important;
+  word-wrap: break-word;
+}
 .actions {
   padding: 0;
+}
+
+.nav-actions > .nav-item {
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .content {
@@ -22,3 +30,4 @@
   margin: 0;
   padding: 0;
 }
+

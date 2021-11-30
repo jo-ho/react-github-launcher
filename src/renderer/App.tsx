@@ -1,6 +1,6 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import {  Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button, Container, Row,   } from 'reactstrap';
+import {  Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button, Container, Row, Nav, NavItem, Card, CardTitle, CardBody,   } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
@@ -181,7 +181,7 @@ export default class App extends Component<{}, AppState> {
 					onClickCancel={this.onAddModalCancel}
 					onClickConfirm={this.onAddModalConfirm}
 				/>
-        <Row>
+        <Row noGutters>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
 					</Col>
@@ -192,9 +192,49 @@ export default class App extends Component<{}, AppState> {
 					</Col>
 					<Col className="bg-dark actions" xs="2">
 						{this.state.currentRepo.assets.length > 0 ? (
-							<div>
+
+							<Nav vertical justified className="nav-actions">
+
+<NavItem>
+                <Card className="bg-dark border-0">
+					<CardBody>
+								<Button
+									onClick={this.onClickLaunchBtn}
+									disabled={this.state.exePath === ''}
+									size="sm"
+									color="primary"
+                  className="w-100 py-3"
+
+
+								>
+									Launch
+								</Button>
+                </CardBody>
+                </Card>
+                </NavItem>
+
+
+                <NavItem>
+				<Card className="bg-dark border-0">
+					<CardTitle className="text-light" tag="h5">
+						App path
+					</CardTitle>
+					<CardBody>
+						<p className=" text-break text-secondary">{this.state.exePath}</p>
+								<Button className="w-100" onClick={this.onClickStartBtn} size="sm" color="primary">
+									Select exe
+								</Button>
+								</CardBody>
+								</Card>
+                </NavItem>
+                <NavItem>
+                  <Card className="bg-dark border-0">
+                  <CardTitle className="text-light" tag="h5">
+        Releases
+      </CardTitle>
+      <CardBody>
 								<Dropdown toggle={this.toggleDropdown} isOpen={this.state.dropDown} size="sm" ge>
-									<DropdownToggle caret  >
+									<DropdownToggle block caret  >
 										{this.state.currentAsset !== null ? this.state.currentAsset.name : 'Select'}
 									</DropdownToggle>
 									<DropdownMenu dark >
@@ -207,26 +247,21 @@ export default class App extends Component<{}, AppState> {
 										})}
 									</DropdownMenu>
 								</Dropdown>
+
 								<Button
 									onClick={this.onClickDownloadAsset}
 									disabled={this.state.downloadBtnDisabled || this.state.currentAsset === null}
 									size="sm"
 									color="primary"
+                  className="w-100"
 								>
 									Download
 								</Button>
-								<Button onClick={this.onClickStartBtn} size="sm" color="primary">
-									Select exe
-								</Button>
-								<Button
-									onClick={this.onClickLaunchBtn}
-									disabled={this.state.exePath === ''}
-									size="sm"
-									color="primary"
-								>
-									Launch
-								</Button>
-							</div>
+                </CardBody>
+                </Card>
+                </ NavItem>
+							</Nav>
+
 						) : (
 							'Column'
 						)}
