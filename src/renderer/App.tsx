@@ -17,6 +17,7 @@ interface AppState {
 	currentAsset: any;
 	downloadBtnDisabled: boolean;
 	exePath: string;
+  addModalAddAsRepo: boolean;
 }
 
 export default class App extends Component<{}, AppState> {
@@ -30,7 +31,8 @@ export default class App extends Component<{}, AppState> {
 			currentAsset: null,
 			downloadBtnDisabled: false,
 			exePath: '',
-			addModalErrorMsg: ''
+			addModalErrorMsg: '',
+      addModalAddAsRepo: false
 		};
 	}
 
@@ -40,9 +42,12 @@ export default class App extends Component<{}, AppState> {
 				repos: res
 			});
 		});
-		window.api.onShowAddModalRequested(() => {
+		window.api.onShowAddModalRequested((event, addAsRepo) => {
+      console.log(event)
+      console.log(addAsRepo)
 			this.setState({
-				addModalOpen: true
+				addModalOpen: true,
+        addModalAddAsRepo: addAsRepo
 			});
 		});
 	}
@@ -71,54 +76,71 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 	onAddModalConfirm = async (ownerName: string, repoName: string) => {
-		try {
-			await window.api.getRepo(ownerName, repoName);
-			let newRepo: Repo = {
-				name: repoName,
-				owner: ownerName,
-				content: '',
-				assets: [],
-				pathToExe: ''
-			};
+    let newRepo: Repo = {
+      name: repoName,
+      owner: ownerName,
+      content: '',
+      assets: [],
+      pathToExe: ''
+    };
 
 
-				try {
-          var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
-          newRepo.content = readme;
+    if (this.state.addModalAddAsRepo) {
+      try {
+        await window.api.getRepo(ownerName, repoName);
 
-				} catch (error) {
 
-					console.log(error, 'Readme not found');
-				} finally {
           try {
-            var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
-            newRepo.assets = assets;
+            var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
+            newRepo.content = readme;
 
-            console.log(assets);
-
-            this.setState(
-              {
-                repos: [ ...this.state.repos, newRepo ]
-              },
-              () => {
-                console.log(this.state.repos);
-                window.api.saveReposToFile(this.state.repos);
-              }
-            );
-            this.onAddModalCancel();
           } catch (error) {
-            this.setState({
-              addModalErrorMsg: 'Releases not found'
-            });
-            console.log(error, 'Releases not found');
+
+            console.log(error, 'Readme not found');
+          } finally {
+            try {
+              var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
+              newRepo.assets = assets;
+
+              console.log(assets);
+
+              this.setState(
+                {
+                  repos: [ ...this.state.repos, newRepo ]
+                },
+                () => {
+                  console.log(this.state.repos);
+                  window.api.saveReposToFile(this.state.repos);
+                }
+              );
+              this.onAddModalCancel();
+            } catch (error) {
+              this.setState({
+                addModalErrorMsg: 'Releases not found'
+              });
+              console.log(error, 'Releases not found');
+            }
           }
+      } catch (error) {
+        this.setState({
+          addModalErrorMsg: 'Repo not found'
+        });
+        console.log(error, 'repo not found');
+      }
+    } else {
+      this.setState(
+        {
+          repos: [ ...this.state.repos, newRepo ]
+        },
+        () => {
+          console.log(this.state.repos);
+          window.api.saveReposToFile(this.state.repos);
         }
-		} catch (error) {
-			this.setState({
-				addModalErrorMsg: 'Repo not found'
-			});
-			console.log(error, 'repo not found');
-		}
+      );
+      this.onAddModalCancel();
+
+    }
+
 	};
 
 	toggleDropdown = () => {
@@ -180,6 +202,7 @@ export default class App extends Component<{}, AppState> {
 					errorMsgToggle={this.addModalErrorMsgToggle}
 					onClickCancel={this.onAddModalCancel}
 					onClickConfirm={this.onAddModalConfirm}
+          addAsRepo={this.state.addModalAddAsRepo}
 				/>
         <Row noGutters>
 					<Col xs="2">

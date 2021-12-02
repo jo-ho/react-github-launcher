@@ -7,6 +7,7 @@ interface AddModalProps {
   onClickConfirm: (ownerName: string, repoName: string) => void
   errorMsg: string
   errorMsgToggle: () => void
+  addAsRepo: boolean
 }
 
 
@@ -32,9 +33,11 @@ export const AddModal = (props: AddModalProps) => {
 
 				<ModalBody>
 					<p>Enter a github link:</p>
-					<Input onChange={handleOwnerInputChange} />
+          {props.addAsRepo ?
+					<Input onChange={handleOwnerInputChange} /> : ""}
 
-					<Input onChange={handleNameInputChange} />
+
+            <Input onChange={handleNameInputChange} />
           <Alert toggle={props.errorMsgToggle} isOpen={props.errorMsg !== ""} color="danger">{props.errorMsg}</Alert>
 				</ModalBody>
 

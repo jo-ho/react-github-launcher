@@ -198,10 +198,17 @@ export default class MenuBuilder {
         label: '&File',
         submenu: [
           {
-            label: '&Open',
+            label: '&Add Repo',
             accelerator: 'Ctrl+O',
             click: () => {
-              this.mainWindow.webContents.send('show-add-modal')
+              this.mainWindow.webContents.send('show-add-modal', true)
+            }
+          },
+          {
+            label: '&Add Custom',
+            accelerator: 'Ctrl+O',
+            click: () => {
+              this.mainWindow.webContents.send('show-add-modal', false)
             }
           },
           {
