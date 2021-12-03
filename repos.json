@@ -400,8 +400,8 @@
   {
     "name": "dasdasd",
     "owner": "",
-    "content": "",
+    "content": "# asdasd\n\nThis a new readme",
     "assets": [],
-    "pathToExe": ""
+    "pathToExe": "/mnt/c/projects/github-launcher/games/powder-v96.2.350-x86_64-win-msvc-static.exe"
   }
 ]

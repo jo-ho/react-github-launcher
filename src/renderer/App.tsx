@@ -7,11 +7,13 @@ import ReactMarkdown from 'react-markdown';
 import { Component } from 'react';
 import '../config';
 import './App.css'
+import { EditModal } from './EditModal';
 
 interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
 	addModalOpen: boolean;
+  editModalOpen: boolean;
 	addModalErrorMsg: string;
 	dropDown: boolean;
 	currentAsset: any;
@@ -27,6 +29,7 @@ export default class App extends Component<{}, AppState> {
 			repos: [],
 			currentRepo: { owner: '', name: '', content: '', assets: [], pathToExe: '' },
 			addModalOpen: false,
+			editModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
 			downloadBtnDisabled: false,
@@ -50,6 +53,12 @@ export default class App extends Component<{}, AppState> {
         addModalAddAsRepo: addAsRepo
 			});
 		});
+
+    window.api.onShowEditModalRequested(() => {
+			this.setState({
+				editModalOpen: true,
+			});
+    })
 	}
 
 	onTabClick = (repo: Repo) => {
@@ -75,6 +84,13 @@ export default class App extends Component<{}, AppState> {
 			addModalOpen: false
 		});
 	};
+
+	onEditModalCancel = () => {
+		this.setState({
+			editModalOpen: false
+		});
+	};
+
 	onAddModalConfirm = async (ownerName: string, repoName: string) => {
     let newRepo: Repo = {
       name: repoName,
@@ -143,6 +159,13 @@ export default class App extends Component<{}, AppState> {
 
 	};
 
+  onEditModalConfirm = (content: string) => {
+    console.log(content)
+    this.onEditModalCancel();
+    this.state.currentRepo.content = content
+    window.api.saveReposToFile(this.state.repos);
+  }
+
 	toggleDropdown = () => {
 		this.setState({
 			dropDown: !this.state.dropDown
@@ -204,6 +227,7 @@ export default class App extends Component<{}, AppState> {
 					onClickConfirm={this.onAddModalConfirm}
           addAsRepo={this.state.addModalAddAsRepo}
 				/>
+        <EditModal isOpen={this.state.editModalOpen} content={this.state.currentRepo.content} onClickCancel={this.onEditModalCancel} onClickConfirm={this.onEditModalConfirm}/>
         <Row noGutters>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
@@ -214,7 +238,6 @@ export default class App extends Component<{}, AppState> {
               </ReactMarkdown>
 					</Col>
 					<Col className="bg-dark actions" xs="2">
-						{this.state.currentRepo.assets.length > 0 ? (
 
 							<Nav vertical justified className="nav-actions">
 
@@ -237,6 +260,7 @@ export default class App extends Component<{}, AppState> {
                 </NavItem>
 
 
+
                 <NavItem>
 				<Card className="bg-dark border-0">
 					<CardTitle className="text-light" tag="h5">
@@ -250,6 +274,8 @@ export default class App extends Component<{}, AppState> {
 								</CardBody>
 								</Card>
                 </NavItem>
+              {this.state.currentRepo.assets.length > 0 ? (
+
                 <NavItem>
                   <Card className="bg-dark border-0">
                   <CardTitle className="text-light" tag="h5">
@@ -283,11 +309,11 @@ export default class App extends Component<{}, AppState> {
                 </CardBody>
                 </Card>
                 </ NavItem>
+                                ) : (
+                                  ""
+                                )}
 							</Nav>
 
-						) : (
-							'Column'
-						)}
 					</Col>
           </Row>
         </Container>

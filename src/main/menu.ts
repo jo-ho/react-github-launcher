@@ -204,20 +204,29 @@ export default class MenuBuilder {
               this.mainWindow.webContents.send('show-add-modal', true)
             }
           },
+
           {
             label: '&Add Custom',
-            accelerator: 'Ctrl+O',
+            accelerator: 'Ctrl+U',
             click: () => {
               this.mainWindow.webContents.send('show-add-modal', false)
             }
           },
+
           {
-            label: '&Close',
-            accelerator: 'Ctrl+W',
+            label: '&Edit Readme',
+            accelerator: 'Ctrl+E',
             click: () => {
-              this.mainWindow.close();
-            },
+              this.mainWindow.webContents.send('show-edit-modal')
+            }
           },
+          // {
+          //   label: '&Close',
+          //   accelerator: 'Ctrl+W',
+          //   click: () => {
+          //     this.mainWindow.close();
+          //   },
+          // },
         ],
       },
       {
