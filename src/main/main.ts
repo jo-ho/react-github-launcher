@@ -42,12 +42,7 @@ let mainWindow: BrowserWindow | null = null;
 ipcMain.handle('on-choose-exe-request', async (event) => {
   console.log(event)
  return dialog.showOpenDialog({ properties: ['openFile'] })
-//  .then(result => {
-//   console.log(result.canceled)
-//   console.log(result.filePaths)
-// }).catch(err => {
-//   console.log(err)
-// })
+
 
 
 })
@@ -56,7 +51,6 @@ ipcMain.handle('renderer-init-done', async (event) => {
   console.log(event)
   const repos: Repo[]  = JSON.parse(fs.readFileSync( process.cwd() + '/repos.json', 'utf-8'))
   return repos
-  // event.reply('ipc-example', msgTemplate('pong'));
 });
 
 ipcMain.handle('on-get-repo', async (event, owner, repo) => {
@@ -99,9 +93,12 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
 })
 
-ipcMain.handle('on-download-asset-request', async (event, asset) => {
+ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) => {
   console.log(event)
   console.log(asset)
+  console.log(name)
+  console.log(owner)
+
 
   const streamPipeline = util.promisify(stream.pipeline);
 
@@ -110,15 +107,21 @@ ipcMain.handle('on-download-asset-request', async (event, asset) => {
 
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
 
+  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/"
+  console.log(assetDir)
 
-  await streamPipeline(response.body, fs.createWriteStream(globalThis.app.gamesFolderPath + asset.name));
+  if (!fs.existsSync(assetDir)){
+    fs.mkdirSync(assetDir, { recursive: true });
+  }
+
+  await streamPipeline(response.body, fs.createWriteStream(assetDir + asset.name));
 
 
-  if (asset.content_type == "application/zip") {
+  if (asset.content_type == "application/zip" || asset.content_type == "application/x-zip-compressed") {
 
 
   try {
-		await extract(globalThis.app.gamesFolderPath + asset.name, { dir: path.join(process.cwd(), './games') })
+		await extract(globalThis.app.gamesFolderPath + asset.name, { dir: path.join(process.cwd(), assetDir) })
 		console.log('Extraction complete')
 
 

@@ -8,6 +8,8 @@ import { Component } from 'react';
 import '../config';
 import './App.css'
 import { EditModal } from './EditModal';
+import remarkGfm from 'remark-gfm'
+
 
 interface AppState {
 	repos: Repo[];
@@ -184,7 +186,7 @@ export default class App extends Component<{}, AppState> {
 				downloadBtnDisabled: true
 			},
 			async () => {
-				await window.api.downloadAsset(this.state.currentAsset);
+				await window.api.downloadAsset(this.state.currentRepo.owner, this.state.currentRepo.name ,this.state.currentAsset);
 				this.setState({
 					downloadBtnDisabled: false
 				});
@@ -233,7 +235,7 @@ export default class App extends Component<{}, AppState> {
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
 					</Col>
 					<Col className="content" xs="8">
-						<ReactMarkdown  >
+						<ReactMarkdown remarkPlugins={[remarkGfm]}  >
                {this.state.currentRepo.content}
               </ReactMarkdown>
 					</Col>
