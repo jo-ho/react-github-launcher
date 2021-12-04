@@ -1,6 +1,6 @@
 // import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import {  Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button, Container, Row, Nav, NavItem, Card, CardTitle, CardBody,   } from 'reactstrap';
+import {  Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Button, Container, Row, Nav, NavItem, Card, CardTitle, CardBody, Alert,   } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
@@ -22,6 +22,8 @@ interface AppState {
 	downloadBtnDisabled: boolean;
 	exePath: string;
   addModalAddAsRepo: boolean;
+  downloadDoneAlert: boolean
+  downloadPath: string
 }
 
 export default class App extends Component<{}, AppState> {
@@ -35,6 +37,8 @@ export default class App extends Component<{}, AppState> {
 			dropDown: false,
 			currentAsset: null,
 			downloadBtnDisabled: false,
+      downloadDoneAlert: false,
+      downloadPath: "",
 			exePath: '',
 			addModalErrorMsg: '',
       addModalAddAsRepo: false
@@ -188,7 +192,10 @@ export default class App extends Component<{}, AppState> {
 			async () => {
 				await window.api.downloadAsset(this.state.currentRepo.owner, this.state.currentRepo.name ,this.state.currentAsset);
 				this.setState({
-					downloadBtnDisabled: false
+					downloadBtnDisabled: false,
+          downloadDoneAlert: true,
+          downloadPath: globalThis.app.gamesFolderPath + this.state.currentRepo.owner + "/" + this.state.currentRepo.name
+
 				});
 			}
 		);
@@ -269,7 +276,7 @@ export default class App extends Component<{}, AppState> {
 						App path
 					</CardTitle>
 					<CardBody>
-						<p className=" text-break text-secondary">{this.state.exePath}</p>
+						<p className=" text-break small text-secondary">{this.state.exePath}</p>
 								<Button className="w-100" onClick={this.onClickStartBtn} size="sm" color="primary">
 									Select exe
 								</Button>
@@ -308,6 +315,18 @@ export default class App extends Component<{}, AppState> {
 								>
 									Download
 								</Button>
+                {this.state.downloadBtnDisabled ? <p className="text-light py-2"> Downloading ... </p> : ""}
+                {this.state.downloadDoneAlert ?
+<Alert
+isOpen= {this.state.downloadDoneAlert}
+toggle={() => this.setState({
+  downloadDoneAlert: false
+})}
+  color="info"
+  className="text-break small my-2"
+>
+  Download done, saved to {this.state.downloadPath}
+</Alert> : ""}
                 </CardBody>
                 </Card>
                 </ NavItem>
