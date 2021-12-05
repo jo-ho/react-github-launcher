@@ -121,7 +121,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
 
   try {
-		await extract(globalThis.app.gamesFolderPath + asset.name, { dir: path.join(process.cwd(), assetDir) })
+		await extract(assetDir + asset.name, { dir: path.join(process.cwd(), assetDir + "/" + path.parse(asset.name).name) })
 		console.log('Extraction complete')
 
 
