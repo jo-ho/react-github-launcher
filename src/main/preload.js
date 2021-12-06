@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('api', {
   getRepoInfoFromGitHub: (owner, repo) => ipcRenderer.invoke('on-add-repo', owner, repo),
   getRepoReleasesFromGitHub: (owner, repo) => ipcRenderer.invoke('on-get-releases-request', owner, repo),
   saveReposToFile: (repos) => ipcRenderer.invoke("on-save-repos-to-file-request", repos),
+  checkAssetDirExists: (owner, name, asset) => ipcRenderer.invoke("on-check-asset-exists-request", owner, name, asset),
   downloadAsset: (owner, name, asset) => ipcRenderer.invoke("on-download-asset-request", owner, name, asset),
   chooseExeFile: () => ipcRenderer.invoke("on-choose-exe-request"),
   launchExeFile: (path) => ipcRenderer.invoke("on-launch-exe-request", path)

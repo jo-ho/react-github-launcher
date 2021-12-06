@@ -93,6 +93,19 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
 })
 
+ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset) => {
+  console.log(event)
+  console.log(asset)
+  console.log(name)
+  console.log(owner)
+
+  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/"  + path.parse(asset.name).name
+  if (!fs.existsSync(assetDir)){
+    return false
+  } else return true
+
+})
+
 ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) => {
   console.log(event)
   console.log(asset)
@@ -107,21 +120,23 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
 
-  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/"
+  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name
   console.log(assetDir)
 
   if (!fs.existsSync(assetDir)){
     fs.mkdirSync(assetDir, { recursive: true });
   }
 
-  await streamPipeline(response.body, fs.createWriteStream(assetDir + asset.name));
+  const assetFile = assetDir + asset.name
+
+  await streamPipeline(response.body, fs.createWriteStream(assetFile));
 
 
   if (asset.content_type == "application/zip" || asset.content_type == "application/x-zip-compressed") {
 
 
   try {
-		await extract(assetDir + asset.name, { dir: path.join(process.cwd(), assetDir + "/" + path.parse(asset.name).name) })
+		await extract(assetFile, { dir: path.join(process.cwd(), assetDir) })
 		console.log('Extraction complete')
 
 

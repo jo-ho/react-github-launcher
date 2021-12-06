@@ -6,6 +6,7 @@ export interface Api {
   getRepoInfoFromGitHub: (owner: string, repo: string) => Promise<string>,
   saveReposToFile: (repos: Repo[]) => Promise<void>
   getRepoReleasesFromGitHub: (owner: string, repo: string) => Promise<Array<any>>,
+  checkAssetDirExists: (owner: string, name : string, asset: any) => Promise<boolean>,
   downloadAsset: (owner: string, name : string, asset: any) => Promise<void>,
   chooseExeFile: () =>  Promise<Electron.OpenDialogReturnValue>,
   launchExeFile: (path: string) => Promise<void>

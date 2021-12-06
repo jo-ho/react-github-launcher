@@ -9,6 +9,7 @@ import '../config';
 import './App.css'
 import { EditModal } from './EditModal';
 import remarkGfm from 'remark-gfm'
+import { AssetExistsModal } from './AssetExistsModal';
 
 
 interface AppState {
@@ -16,6 +17,7 @@ interface AppState {
 	currentRepo: Repo;
 	addModalOpen: boolean;
   editModalOpen: boolean;
+  assetExistsModalOpen: boolean;
 	addModalErrorMsg: string;
 	dropDown: boolean;
 	currentAsset: any;
@@ -34,6 +36,7 @@ export default class App extends Component<{}, AppState> {
 			currentRepo: { owner: '', name: '', content: '', assets: [], pathToExe: '' },
 			addModalOpen: false,
 			editModalOpen: false,
+      assetExistsModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
 			downloadBtnDisabled: false,
@@ -184,22 +187,31 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-	onClickDownloadAsset = () => {
-		this.setState(
-			{
-				downloadBtnDisabled: true
-			},
-			async () => {
-				await window.api.downloadAsset(this.state.currentRepo.owner, this.state.currentRepo.name ,this.state.currentAsset);
-				this.setState({
-					downloadBtnDisabled: false,
-          downloadDoneAlert: true,
-          downloadPath: globalThis.app.gamesFolderPath + this.state.currentRepo.owner + "/" + this.state.currentRepo.name
+	onClickDownloadAsset = async () => {
+    if (await window.api.checkAssetDirExists(this.state.currentRepo.owner, this.state.currentRepo.name ,this.state.currentAsset)) {
+      this.setState({
+        assetExistsModalOpen: true
 
-				});
-			}
-		);
+      });
+    } else {
+      this.downloadCurrentAsset()
+    }
+
 	};
+
+  downloadCurrentAsset = async () => {
+    this.setState({
+      downloadBtnDisabled: true
+    })
+
+    await window.api.downloadAsset(this.state.currentRepo.owner, this.state.currentRepo.name ,this.state.currentAsset);
+    this.setState({
+      downloadBtnDisabled: false,
+      downloadDoneAlert: true,
+      downloadPath: globalThis.app.gamesFolderPath + this.state.currentRepo.owner + "/" + this.state.currentRepo.name + "/"
+
+    });
+  }
 
 	onClickStartBtn = async () => {
 		window.api.chooseExeFile().then((result) => {
@@ -225,6 +237,11 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
+  onAssetExistsModalConfirm = () => {
+    this.setState({assetExistsModalOpen: false})
+    this.downloadCurrentAsset()
+  }
+
 	render() {
 		return (
       <Container fluid >
@@ -237,6 +254,7 @@ export default class App extends Component<{}, AppState> {
           addAsRepo={this.state.addModalAddAsRepo}
 				/>
         <EditModal isOpen={this.state.editModalOpen} content={this.state.currentRepo.content} onClickCancel={this.onEditModalCancel} onClickConfirm={this.onEditModalConfirm}/>
+        <AssetExistsModal isOpen={this.state.assetExistsModalOpen} onClickCancel={() => this.setState({assetExistsModalOpen: false})} onClickConfirm={this.onAssetExistsModalConfirm} />
         <Row noGutters>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
