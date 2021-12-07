@@ -15,15 +15,12 @@ import { AssetExistsModal } from './AssetExistsModal';
 interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
-	addModalOpen: boolean;
   editModalOpen: boolean;
   assetExistsModalOpen: boolean;
-	addModalErrorMsg: string;
 	dropDown: boolean;
 	currentAsset: any;
 	downloadBtnDisabled: boolean;
 	exePath: string;
-  addModalAddAsRepo: boolean;
   downloadDoneAlert: boolean
   downloadPath: string
 }
@@ -34,7 +31,6 @@ export default class App extends Component<{}, AppState> {
 		this.state = {
 			repos: [],
 			currentRepo: { owner: '', name: '', content: '', assets: [], pathToExe: '' },
-			addModalOpen: false,
 			editModalOpen: false,
       assetExistsModalOpen: false,
 			dropDown: false,
@@ -43,8 +39,6 @@ export default class App extends Component<{}, AppState> {
       downloadDoneAlert: false,
       downloadPath: "",
 			exePath: '',
-			addModalErrorMsg: '',
-      addModalAddAsRepo: false
 		};
 	}
 
@@ -52,14 +46,6 @@ export default class App extends Component<{}, AppState> {
 		window.api.getReposFromFile().then((res: Repo[]) => {
 			this.setState({
 				repos: res
-			});
-		});
-		window.api.onShowAddModalRequested((event, addAsRepo) => {
-      console.log(event)
-      console.log(addAsRepo)
-			this.setState({
-				addModalOpen: true,
-        addModalAddAsRepo: addAsRepo
 			});
 		});
 
@@ -88,11 +74,7 @@ export default class App extends Component<{}, AppState> {
 		console.log(repo);
 	};
 
-	onAddModalCancel = () => {
-		this.setState({
-			addModalOpen: false
-		});
-	};
+
 
 	onEditModalCancel = () => {
 		this.setState({
@@ -100,73 +82,18 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-	onAddModalConfirm = async (ownerName: string, repoName: string) => {
-    let newRepo: Repo = {
-      name: repoName,
-      owner: ownerName,
-      content: '',
-      assets: [],
-      pathToExe: ''
-    };
-
-
-    if (this.state.addModalAddAsRepo) {
-      try {
-        await window.api.getRepo(ownerName, repoName);
-
-
-          try {
-            var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
-            newRepo.content = readme;
-
-          } catch (error) {
-
-            console.log(error, 'Readme not found');
-          } finally {
-            try {
-              var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
-              newRepo.assets = assets;
-
-              console.log(assets);
-
-              this.setState(
-                {
-                  repos: [ ...this.state.repos, newRepo ]
-                },
-                () => {
-                  console.log(this.state.repos);
-                  window.api.saveReposToFile(this.state.repos);
-                }
-              );
-              this.onAddModalCancel();
-            } catch (error) {
-              this.setState({
-                addModalErrorMsg: 'Releases not found'
-              });
-              console.log(error, 'Releases not found');
-            }
-          }
-      } catch (error) {
-        this.setState({
-          addModalErrorMsg: 'Repo not found'
-        });
-        console.log(error, 'repo not found');
+  addNewRepo = (repo: Repo) => {
+    this.setState(
+      {
+        repos: [ ...this.state.repos, repo ]
+      },
+      () => {
+        console.log(this.state.repos);
+        window.api.saveReposToFile(this.state.repos);
       }
-    } else {
-      this.setState(
-        {
-          repos: [ ...this.state.repos, newRepo ]
-        },
-        () => {
-          console.log(this.state.repos);
-          window.api.saveReposToFile(this.state.repos);
-        }
-      );
-      this.onAddModalCancel();
+    );
+  }
 
-    }
-
-	};
 
   onEditModalConfirm = (content: string) => {
     console.log(content)
@@ -231,11 +158,6 @@ export default class App extends Component<{}, AppState> {
 		window.api.launchExeFile(this.state.exePath);
 	};
 
-	addModalErrorMsgToggle = () => {
-		this.setState({
-			addModalErrorMsg: ''
-		});
-	};
 
   onAssetExistsModalConfirm = () => {
     this.setState({assetExistsModalOpen: false})
@@ -246,12 +168,7 @@ export default class App extends Component<{}, AppState> {
 		return (
       <Container fluid >
 				<AddModal
-					isOpen={this.state.addModalOpen}
-					errorMsg={this.state.addModalErrorMsg}
-					errorMsgToggle={this.addModalErrorMsgToggle}
-					onClickCancel={this.onAddModalCancel}
-					onClickConfirm={this.onAddModalConfirm}
-          addAsRepo={this.state.addModalAddAsRepo}
+          addNewRepo={this.addNewRepo}
 				/>
         <EditModal isOpen={this.state.editModalOpen} content={this.state.currentRepo.content} onClickCancel={this.onEditModalCancel} onClickConfirm={this.onEditModalConfirm}/>
         <AssetExistsModal isOpen={this.state.assetExistsModalOpen} onClickCancel={() => this.setState({assetExistsModalOpen: false})} onClickConfirm={this.onAssetExistsModalConfirm} />

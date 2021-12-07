@@ -247,7 +247,8 @@
     "reactstrap": "^9.0.1",
     "regenerator-runtime": "^0.13.9",
     "remark-gfm": "^3.0.1",
-    "upgrade": "^1.1.0"
+    "upgrade": "^1.1.0",
+    "uuid": "^8.3.2"
   },
   "devEngines": {
     "node": ">=14.x",

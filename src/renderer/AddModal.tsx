@@ -1,49 +1,107 @@
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from 'reactstrap';
-import { useState } from 'react'
+import {
+	Button,
+	Input,
+	Modal,
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	Alert,
+	InputGroup,
+	InputGroupText
+} from 'reactstrap';
+import { useEffect, useState } from 'react';
 
 interface AddModalProps {
-	isOpen: boolean;
-	onClickCancel: () => void;
-  onClickConfirm: (ownerName: string, repoName: string) => void
-  errorMsg: string
-  errorMsgToggle: () => void
-  addAsRepo: boolean
+	addNewRepo: (repo: Repo) => void;
 }
 
-
-
 export const AddModal = (props: AddModalProps) => {
+	const [ repoName, setRepoName ] = useState('');
+	const [ ownerName, setOwnerName ] = useState('');
+	const [ isOpen, setIsOpen ] = useState(false);
+	const [ addAsRepo, setAddAsRepo ] = useState(false);
+	const [ errorMsg, setErrorMsg ] = useState('');
 
-  const [repoName, setRepoName] = useState("")
-  const [ownerName, setOwnerName] = useState("")
+	useEffect(() => {
+		window.api.onShowAddModalRequested((event, addAsRepo) => {
+			console.log(event);
+			setAddAsRepo(addAsRepo);
+			setIsOpen(true);
+		});
+	}, []);
 
-  const handleNameInputChange = (e : React.FormEvent<HTMLInputElement>) => {
-    setRepoName(e.currentTarget.value)
-  }
-  const handleOwnerInputChange = (e : React.FormEvent<HTMLInputElement>) => {
-    setOwnerName(e.currentTarget.value)
-  }
+	const handleOnClickConfirm = async () => {
+		let newRepo: Repo = {
+			name: repoName,
+			owner: ownerName,
+			content: '',
+			assets: [],
+			pathToExe: ''
+		};
 
+		if (addAsRepo) {
+			try {
+				await window.api.getRepo(ownerName, repoName);
 
+				try {
+					var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
+					newRepo.content = readme;
+				} catch (error) {
+					console.log(error, 'Readme not found');
+				} finally {
+					try {
+						var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
+						newRepo.assets = assets;
+
+						console.log(assets);
+						setIsOpen(false);
+						props.addNewRepo(newRepo);
+					} catch (error) {
+						setErrorMsg('Releases not found');
+
+						console.log(error, 'Releases not found');
+					}
+				}
+			} catch (error) {
+				setErrorMsg('repo not found');
+
+				console.log(error, 'repo not found');
+			}
+		} else {
+			setIsOpen(false);
+			props.addNewRepo(newRepo);
+		}
+	};
 
 	return (
 		<div>
-			<Modal size="sm" isOpen={props.isOpen}>
+			<Modal size="sm" isOpen={isOpen}>
 				<ModalHeader>Add repo</ModalHeader>
 
 				<ModalBody>
-					<p>Enter a github link:</p>
-          {props.addAsRepo ?
-					<Input onChange={handleOwnerInputChange} /> : ""}
+					{addAsRepo ? (
+						<InputGroup size="sm">
+							<InputGroupText>Owner:</InputGroupText>
+							<Input onChange={(e) => setOwnerName(e.currentTarget.value)} />
+						</InputGroup>
+					) : (
+						""
+					)}
 
-
-            <Input onChange={handleNameInputChange} />
-          <Alert toggle={props.errorMsgToggle} isOpen={props.errorMsg !== ""} color="danger">{props.errorMsg}</Alert>
+					<InputGroup size="sm">
+						<InputGroupText>Repo:</InputGroupText>
+						<Input onChange={(e) => setRepoName(e.currentTarget.value)} />
+					</InputGroup>
+					<Alert toggle={() => setErrorMsg('')} isOpen={errorMsg !== ''} color="danger">
+						{errorMsg}
+					</Alert>
 				</ModalBody>
 
 				<ModalFooter>
-					<Button color="primary" onClick={() => props.onClickConfirm(ownerName, repoName)}>Add</Button>
-					<Button onClick={props.onClickCancel}>Cancel</Button>
+					<Button color="primary" onClick={handleOnClickConfirm}>
+						Add
+					</Button>
+					<Button onClick={() => setIsOpen(false)}>Cancel</Button>
 				</ModalFooter>
 			</Modal>
 		</div>
