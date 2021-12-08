@@ -10,12 +10,14 @@ import './App.css'
 import { EditModal } from './EditModal';
 import remarkGfm from 'remark-gfm'
 import { AssetExistsModal } from './AssetExistsModal';
+import { DeleteModal } from './DeleteModal';
 
 
 interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
   editModalOpen: boolean;
+  deleteModalOpen: boolean;
   assetExistsModalOpen: boolean;
 	dropDown: boolean;
 	currentAsset: any;
@@ -30,8 +32,9 @@ export default class App extends Component<{}, AppState> {
 		super(props);
 		this.state = {
 			repos: [],
-			currentRepo: { owner: '', name: '', content: '', assets: [], pathToExe: '' },
+			currentRepo: { id : '',owner: '', name: '', content: '', assets: [], pathToExe: '' },
 			editModalOpen: false,
+			deleteModalOpen: false,
       assetExistsModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
@@ -49,11 +52,14 @@ export default class App extends Component<{}, AppState> {
 			});
 		});
 
+
     window.api.onShowEditModalRequested(() => {
 			this.setState({
 				editModalOpen: true,
 			});
     })
+
+
 	}
 
 	onTabClick = (repo: Repo) => {
@@ -164,6 +170,15 @@ export default class App extends Component<{}, AppState> {
     this.downloadCurrentAsset()
   }
 
+  deleteCurrentRepo = () => {
+	  this.setState({
+		  repos: this.state.repos.filter(repo => repo.id !== this.state.currentRepo.id ),
+      currentRepo:  { id : '',owner: '', name: '', content: '', assets: [], pathToExe: '' }
+	  }, () => {
+		window.api.saveReposToFile(this.state.repos);
+	  })
+  }
+
 	render() {
 		return (
       <Container fluid >
@@ -172,6 +187,7 @@ export default class App extends Component<{}, AppState> {
 				/>
         <EditModal isOpen={this.state.editModalOpen} content={this.state.currentRepo.content} onClickCancel={this.onEditModalCancel} onClickConfirm={this.onEditModalConfirm}/>
         <AssetExistsModal isOpen={this.state.assetExistsModalOpen} onClickCancel={() => this.setState({assetExistsModalOpen: false})} onClickConfirm={this.onAssetExistsModalConfirm} />
+        <DeleteModal id={this.state.currentRepo.id} deleteCurrentRepo={this.deleteCurrentRepo}/>
         <Row noGutters>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
@@ -182,6 +198,7 @@ export default class App extends Component<{}, AppState> {
               </ReactMarkdown>
 					</Col>
 					<Col className="bg-dark actions" xs="2">
+            {this.state.currentRepo.id ?
 
 							<Nav vertical justified className="nav-actions">
 
@@ -269,7 +286,7 @@ toggle={() => this.setState({
                                   ""
                                 )}
 							</Nav>
-
+: ""}
 					</Col>
           </Row>
         </Container>

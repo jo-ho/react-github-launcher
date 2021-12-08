@@ -220,13 +220,13 @@ export default class MenuBuilder {
               this.mainWindow.webContents.send('show-edit-modal')
             }
           },
-          // {
-          //   label: '&Close',
-          //   accelerator: 'Ctrl+W',
-          //   click: () => {
-          //     this.mainWindow.close();
-          //   },
-          // },
+          {
+            label: '&Delete',
+            accelerator: 'Ctrl+W',
+            click: () => {
+              this.mainWindow.webContents.send('show-delete-modal');
+            },
+          },
         ],
       },
       {

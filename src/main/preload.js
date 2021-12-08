@@ -10,6 +10,10 @@ contextBridge.exposeInMainWorld('api', {
   onShowEditModalRequested: (callback) => {
     ipcRenderer.on('show-edit-modal', callback)
   },
+
+  onShowDeleteModalRequested: (callback) => {
+    ipcRenderer.on('show-delete-modal', callback)
+  },
   getRepo: (owner, repo) => ipcRenderer.invoke("on-get-repo", owner, repo),
   getRepoInfoFromGitHub: (owner, repo) => ipcRenderer.invoke('on-add-repo', owner, repo),
   getRepoReleasesFromGitHub: (owner, repo) => ipcRenderer.invoke('on-get-releases-request', owner, repo),

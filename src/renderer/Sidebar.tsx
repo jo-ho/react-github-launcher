@@ -8,11 +8,11 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
 	return (
-		<Nav vertical className="bg-dark  min-vh-100 ">
+		<Nav vertical pills className="bg-dark  min-vh-100  ">
 			{props.repos.map((element) => {
 				return (
 					<NavItem>
-						<NavLink onClick={ () => props.onTabClick(element)} >{element.name}</NavLink>
+						<NavLink id={element.id}  onClick={ () => props.onTabClick(element)} >{element.name}</NavLink>
 					</NavItem>
 				);
 			})}

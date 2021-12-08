@@ -10,6 +10,8 @@ import {
 	InputGroupText
 } from 'reactstrap';
 import { useEffect, useState } from 'react';
+//@ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 
 interface AddModalProps {
 	addNewRepo: (repo: Repo) => void;
@@ -32,11 +34,12 @@ export const AddModal = (props: AddModalProps) => {
 
 	const handleOnClickConfirm = async () => {
 		let newRepo: Repo = {
+      id: uuidv4(),
 			name: repoName,
 			owner: ownerName,
 			content: '',
 			assets: [],
-			pathToExe: ''
+			pathToExe: '',
 		};
 
 		if (addAsRepo) {
