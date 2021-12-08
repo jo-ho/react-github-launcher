@@ -16,8 +16,6 @@ import { DeleteModal } from './DeleteModal';
 interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
-  editModalOpen: boolean;
-  deleteModalOpen: boolean;
   assetExistsModalOpen: boolean;
 	dropDown: boolean;
 	currentAsset: any;
@@ -32,9 +30,7 @@ export default class App extends Component<{}, AppState> {
 		super(props);
 		this.state = {
 			repos: [],
-			currentRepo: { id : '',owner: '', name: '', content: '', assets: [], pathToExe: '' },
-			editModalOpen: false,
-			deleteModalOpen: false,
+			currentRepo: {} as Repo,
       assetExistsModalOpen: false,
 			dropDown: false,
 			currentAsset: null,
@@ -53,11 +49,7 @@ export default class App extends Component<{}, AppState> {
 		});
 
 
-    window.api.onShowEditModalRequested(() => {
-			this.setState({
-				editModalOpen: true,
-			});
-    })
+
 
 
 	}
@@ -82,11 +74,6 @@ export default class App extends Component<{}, AppState> {
 
 
 
-	onEditModalCancel = () => {
-		this.setState({
-			editModalOpen: false
-		});
-	};
 
   addNewRepo = (repo: Repo) => {
     this.setState(
@@ -101,9 +88,8 @@ export default class App extends Component<{}, AppState> {
   }
 
 
-  onEditModalConfirm = (content: string) => {
+  setCurrentRepoContent = (content: string) => {
     console.log(content)
-    this.onEditModalCancel();
     this.state.currentRepo.content = content
     window.api.saveReposToFile(this.state.repos);
   }
@@ -173,7 +159,7 @@ export default class App extends Component<{}, AppState> {
   deleteCurrentRepo = () => {
 	  this.setState({
 		  repos: this.state.repos.filter(repo => repo.id !== this.state.currentRepo.id ),
-      currentRepo:  { id : '',owner: '', name: '', content: '', assets: [], pathToExe: '' }
+      currentRepo: {} as Repo
 	  }, () => {
 		window.api.saveReposToFile(this.state.repos);
 	  })
@@ -185,7 +171,7 @@ export default class App extends Component<{}, AppState> {
 				<AddModal
           addNewRepo={this.addNewRepo}
 				/>
-        <EditModal isOpen={this.state.editModalOpen} content={this.state.currentRepo.content} onClickCancel={this.onEditModalCancel} onClickConfirm={this.onEditModalConfirm}/>
+        <EditModal  content={this.state.currentRepo.content}  setCurrentRepoContent={this.setCurrentRepoContent}/>
         <AssetExistsModal isOpen={this.state.assetExistsModalOpen} onClickCancel={() => this.setState({assetExistsModalOpen: false})} onClickConfirm={this.onAssetExistsModalConfirm} />
         <DeleteModal id={this.state.currentRepo.id} deleteCurrentRepo={this.deleteCurrentRepo}/>
         <Row noGutters>

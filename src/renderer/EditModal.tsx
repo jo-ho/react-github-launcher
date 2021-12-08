@@ -1,12 +1,10 @@
 import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 interface EditModalProps {
-	isOpen: boolean;
   content: string;
-	onClickCancel: () => void;
-  onClickConfirm: (content: string) => void
+  setCurrentRepoContent: (content: string) => void
 }
 
 
@@ -15,7 +13,16 @@ export const EditModal = (props: EditModalProps) => {
 
 
   const [content, setContent] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
 
+
+
+
+  useEffect(() => {
+    window.api.onShowEditModalRequested(() => {
+			setIsOpen(true)
+    })
+  }, [])
 
   const handleContentChange = (e : React.FormEvent<HTMLInputElement>) => {
     console.log(e.currentTarget.value)
@@ -23,10 +30,17 @@ export const EditModal = (props: EditModalProps) => {
 
   }
 
+  const onClickConfirm = () => {
+    setIsOpen(false)
+    props.setCurrentRepoContent(content)
+  }
+
+
+
 
 	return (
 		<div>
-			<Modal className="modal-fullscreen" size="lg" isOpen={props.isOpen}>
+			<Modal className="modal-fullscreen" size="lg" isOpen={isOpen}>
 				<ModalHeader>Edit readme</ModalHeader>
 				<ModalBody className="h-100">
           <Input className="h-100"
@@ -37,8 +51,8 @@ export const EditModal = (props: EditModalProps) => {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button color="primary" onClick={() => props.onClickConfirm(content)} >Confirm</Button>
-					<Button onClick={props.onClickCancel} >Cancel</Button>
+					<Button color="primary" onClick={onClickConfirm} >Confirm</Button>
+					<Button onClick={() => setIsOpen(false)} >Cancel</Button>
 
 				</ModalFooter>
 			</Modal>
