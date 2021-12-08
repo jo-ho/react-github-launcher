@@ -173,7 +173,7 @@ export default class App extends Component<{}, AppState> {
 				/>
         <EditModal  content={this.state.currentRepo.content}  setCurrentRepoContent={this.setCurrentRepoContent}/>
         <AssetExistsModal isOpen={this.state.assetExistsModalOpen} onClickCancel={() => this.setState({assetExistsModalOpen: false})} onClickConfirm={this.onAssetExistsModalConfirm} />
-        <DeleteModal id={this.state.currentRepo.id} deleteCurrentRepo={this.deleteCurrentRepo}/>
+        <DeleteModal  deleteCurrentRepo={this.deleteCurrentRepo}/>
         <Row noGutters>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />

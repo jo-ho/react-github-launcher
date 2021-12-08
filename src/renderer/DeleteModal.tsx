@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 
 
 interface DeleteModalProps {
-  id: string,
   deleteCurrentRepo: () => void
 }
 
