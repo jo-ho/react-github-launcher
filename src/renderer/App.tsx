@@ -27,6 +27,7 @@ import remarkGfm from 'remark-gfm';
 import { AssetExistsModal } from './AssetExistsModal';
 import { DeleteModal } from './DeleteModal';
 import { LaunchCard } from './LaunchCard';
+import { SelectExeCard } from './SelectExeCard';
 
 interface AppState {
 	repos: Repo[];
@@ -144,7 +145,7 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-	onClickStartBtn = async () => {
+	setCurrentPathToExe = async () => {
 		window.api.chooseExeFile().then((result) => {
 			if (!result.canceled) {
 				console.log(result.filePaths);
@@ -201,26 +202,9 @@ export default class App extends Component<{}, AppState> {
 								<NavItem>
 									<LaunchCard currentExePath={this.state.currentRepo.pathToExe} />
 								</NavItem>
-
 								<NavItem>
-									<Card className="bg-dark border-0">
-										<CardTitle className="text-light" tag="h5">
-											App path
-										</CardTitle>
-										<CardBody>
-											<p className=" text-break small text-secondary">
-												{this.state.currentRepo.pathToExe}
-											</p>
-											<Button
-												className="w-100"
-												onClick={this.onClickStartBtn}
-												size="sm"
-												color="primary"
-											>
-												Select exe
-											</Button>
-										</CardBody>
-									</Card>
+                <SelectExeCard currentExePath={this.state.currentRepo.pathToExe} setCurrentPathToExe={this.setCurrentPathToExe} />
+
 								</NavItem>
 								{this.state.currentRepo.assets.length > 0 ? (
 									<NavItem>
