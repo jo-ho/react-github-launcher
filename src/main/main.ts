@@ -120,7 +120,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
 
-  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name
+  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name + "/"
   console.log(assetDir)
 
   if (!fs.existsSync(assetDir)){

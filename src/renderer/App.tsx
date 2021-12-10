@@ -2,19 +2,10 @@
 import { Sidebar } from './Sidebar';
 import {
 	Col,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-	Button,
 	Container,
 	Row,
 	Nav,
 	NavItem,
-	Card,
-	CardTitle,
-	CardBody,
-	Alert
 } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
@@ -24,10 +15,11 @@ import '../config';
 import './App.css';
 import { EditModal } from './EditModal';
 import remarkGfm from 'remark-gfm';
-import { AssetExistsModal } from './AssetExistsModal';
+// import { AssetExistsModal } from './AssetExistsModal';
 import { DeleteModal } from './DeleteModal';
 import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
+import { ReleasesCard } from './ReleasesCard';
 
 interface AppState {
 	repos: Repo[];
@@ -99,11 +91,7 @@ export default class App extends Component<{}, AppState> {
 		window.api.saveReposToFile(this.state.repos);
 	};
 
-	toggleDropdown = () => {
-		this.setState({
-			dropDown: !this.state.dropDown
-		});
-	};
+
 
 	setAsset = (asset: any) => {
 		this.setState({
@@ -111,39 +99,9 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-	onClickDownloadAsset = async () => {
-		if (
-			await window.api.checkAssetDirExists(
-				this.state.currentRepo.owner,
-				this.state.currentRepo.name,
-				this.state.currentAsset
-			)
-		) {
-			this.setState({
-				assetExistsModalOpen: true
-			});
-		} else {
-			this.downloadCurrentAsset();
-		}
-	};
 
-	downloadCurrentAsset = async () => {
-		this.setState({
-			downloadBtnDisabled: true
-		});
 
-		await window.api.downloadAsset(
-			this.state.currentRepo.owner,
-			this.state.currentRepo.name,
-			this.state.currentAsset
-		);
-		this.setState({
-			downloadBtnDisabled: false,
-			downloadDoneAlert: true,
-			downloadPath:
-				globalThis.app.gamesFolderPath + this.state.currentRepo.owner + '/' + this.state.currentRepo.name + '/'
-		});
-	};
+
 
 	setCurrentPathToExe = async () => {
 		window.api.chooseExeFile().then((result) => {
@@ -158,10 +116,7 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
-	onAssetExistsModalConfirm = () => {
-		this.setState({ assetExistsModalOpen: false });
-		this.downloadCurrentAsset();
-	};
+
 
 	deleteCurrentRepo = () => {
 		this.setState(
@@ -183,11 +138,7 @@ export default class App extends Component<{}, AppState> {
 					content={this.state.currentRepo.content}
 					setCurrentRepoContent={this.setCurrentRepoContent}
 				/>
-				<AssetExistsModal
-					isOpen={this.state.assetExistsModalOpen}
-					onClickCancel={() => this.setState({ assetExistsModalOpen: false })}
-					onClickConfirm={this.onAssetExistsModalConfirm}
-				/>
+
 				<DeleteModal deleteCurrentRepo={this.deleteCurrentRepo} />
 				<Row noGutters>
 					<Col xs="2">
@@ -208,69 +159,8 @@ export default class App extends Component<{}, AppState> {
 								</NavItem>
 								{this.state.currentRepo.assets.length > 0 ? (
 									<NavItem>
-										<Card className="bg-dark border-0">
-											<CardTitle className="text-light" tag="h5">
-												Releases
-											</CardTitle>
-											<CardBody>
-												<Dropdown
-													toggle={this.toggleDropdown}
-													isOpen={this.state.dropDown}
-													size="sm"
-													ge
-												>
-													<DropdownToggle block caret>
-														{this.state.currentAsset !== null ? (
-															this.state.currentAsset.name
-														) : (
-															'Select'
-														)}
-													</DropdownToggle>
-													<DropdownMenu dark>
-														{this.state.currentRepo.assets.map((element) => {
-															return (
-																<DropdownItem onClick={() => this.setAsset(element)}>
-																	{element.browser_download_url}
-																</DropdownItem>
-															);
-														})}
-													</DropdownMenu>
-												</Dropdown>
+                    <ReleasesCard assets={this.state.currentRepo.assets} currentAsset={this.state.currentAsset} currentRepo={this.state.currentRepo}  setCurrentAsset={this.setAsset}/>
 
-												<Button
-													onClick={this.onClickDownloadAsset}
-													disabled={
-														this.state.downloadBtnDisabled ||
-														this.state.currentAsset === null
-													}
-													size="sm"
-													color="primary"
-													className="w-100"
-												>
-													Download
-												</Button>
-												{this.state.downloadBtnDisabled ? (
-													<p className="text-light py-2"> Downloading ... </p>
-												) : (
-													''
-												)}
-												{this.state.downloadDoneAlert ? (
-													<Alert
-														isOpen={this.state.downloadDoneAlert}
-														toggle={() =>
-															this.setState({
-																downloadDoneAlert: false
-															})}
-														color="info"
-														className="text-break small my-2"
-													>
-														Download done, saved to {this.state.downloadPath}
-													</Alert>
-												) : (
-													''
-												)}
-											</CardBody>
-										</Card>
 									</NavItem>
 								) : (
 									''
