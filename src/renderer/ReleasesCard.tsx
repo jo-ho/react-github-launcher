@@ -3,7 +3,6 @@ import { Alert, Button, Card, CardBody, CardTitle, Dropdown, DropdownItem, Dropd
 import { AssetExistsModal } from './AssetExistsModal';
 
 interface ReleasesCardProps {
-  assets: any[];
   currentAsset: any;
   currentRepo: Repo;
   setCurrentAsset: (asset: any) => void;
@@ -27,8 +26,6 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
 			)
 		) {
       setAssetExistsModalOpen(true)
-      console.log(assetExistsModalOpen)
-
 		} else {
 			downloadCurrentAsset();
 		}
@@ -72,7 +69,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
         size="sm"
         ge
       >
-        <DropdownToggle block caret>
+        <DropdownToggle block caret className="text-break">
           {props.currentAsset !== null ? (
             props.currentAsset.name
           ) : (
@@ -80,7 +77,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
           )}
         </DropdownToggle>
         <DropdownMenu dark>
-          {props.assets.map((element) => {
+          {props.currentRepo.assets.map((element) => {
             return (
               <DropdownItem onClick={() => props.setCurrentAsset(element)}>
                 {element.browser_download_url}

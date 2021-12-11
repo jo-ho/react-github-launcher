@@ -1,12 +1,5 @@
-// import { MemoryRouter as Router, Switch } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import {
-	Col,
-	Container,
-	Row,
-	Nav,
-	NavItem,
-} from 'reactstrap';
+import { Col, Container, Row, Nav, NavItem } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AddModal } from './AddModal';
 import ReactMarkdown from 'react-markdown';
@@ -15,7 +8,6 @@ import '../config';
 import './App.css';
 import { EditModal } from './EditModal';
 import remarkGfm from 'remark-gfm';
-// import { AssetExistsModal } from './AssetExistsModal';
 import { DeleteModal } from './DeleteModal';
 import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
@@ -24,12 +16,7 @@ import { ReleasesCard } from './ReleasesCard';
 interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
-	assetExistsModalOpen: boolean;
-	dropDown: boolean;
 	currentAsset: any;
-	downloadBtnDisabled: boolean;
-	downloadDoneAlert: boolean;
-	downloadPath: string;
 }
 
 export default class App extends Component<{}, AppState> {
@@ -38,12 +25,7 @@ export default class App extends Component<{}, AppState> {
 		this.state = {
 			repos: [],
 			currentRepo: {} as Repo,
-			assetExistsModalOpen: false,
-			dropDown: false,
-			currentAsset: null,
-			downloadBtnDisabled: false,
-			downloadDoneAlert: false,
-			downloadPath: ''
+			currentAsset: null
 		};
 	}
 
@@ -65,9 +47,6 @@ export default class App extends Component<{}, AppState> {
 			this.setState({
 				currentAsset: null
 			});
-			// this.setState({
-			//   exePath: repo.pathToExe
-			// })
 		}
 
 		console.log(repo);
@@ -91,17 +70,11 @@ export default class App extends Component<{}, AppState> {
 		window.api.saveReposToFile(this.state.repos);
 	};
 
-
-
 	setAsset = (asset: any) => {
 		this.setState({
 			currentAsset: asset
 		});
 	};
-
-
-
-
 
 	setCurrentPathToExe = async () => {
 		window.api.chooseExeFile().then((result) => {
@@ -115,8 +88,6 @@ export default class App extends Component<{}, AppState> {
 			}
 		});
 	};
-
-
 
 	deleteCurrentRepo = () => {
 		this.setState(
@@ -154,13 +125,18 @@ export default class App extends Component<{}, AppState> {
 									<LaunchCard currentExePath={this.state.currentRepo.pathToExe} />
 								</NavItem>
 								<NavItem>
-                <SelectExeCard currentExePath={this.state.currentRepo.pathToExe} setCurrentPathToExe={this.setCurrentPathToExe} />
-
+									<SelectExeCard
+										currentExePath={this.state.currentRepo.pathToExe}
+										setCurrentPathToExe={this.setCurrentPathToExe}
+									/>
 								</NavItem>
 								{this.state.currentRepo.assets.length > 0 ? (
 									<NavItem>
-                    <ReleasesCard assets={this.state.currentRepo.assets} currentAsset={this.state.currentAsset} currentRepo={this.state.currentRepo}  setCurrentAsset={this.setAsset}/>
-
+										<ReleasesCard
+											currentAsset={this.state.currentAsset}
+											currentRepo={this.state.currentRepo}
+											setCurrentAsset={this.setAsset}
+										/>
 									</NavItem>
 								) : (
 									''
