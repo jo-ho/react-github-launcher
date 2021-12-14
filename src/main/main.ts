@@ -19,14 +19,13 @@ import { resolveHtmlPath } from './util';
 import fs from 'fs';
 import util from 'util'
 import stream from 'stream'
-import { Octokit } from '@octokit/core';
 import extract from 'extract-zip';
 
 import '../config'
 import { execFile } from 'child_process';
+import GithubService from './services/github_service';
 
-const fetch = require('node-fetch')
-const octokit = new Octokit()
+const githubService = new GithubService()
 
 
 export default class AppUpdater {
@@ -55,41 +54,16 @@ ipcMain.handle('renderer-init-done', async (event) => {
 
 ipcMain.handle('on-get-repo', async (event, owner, repo) => {
   console.log(event)
-  console.log(owner)
-  console.log(repo)
 
-
-  let res = await octokit.request('GET /repos/{owner}/{repo}', {
-    owner: owner,
-    repo: repo,
-  })
-
-  console.log(res)
-  return res.status == 200
+  return await githubService.repoExists(owner, repo)
 
 })
 
 
 ipcMain.handle('on-add-repo', async (event, owner, repo) => {
   console.log(event)
-  console.log(owner)
-  console.log(repo)
 
-  let res = await octokit.request('GET /repos/{owner}/{repo}/readme', {
-    owner: owner,
-    repo: repo,
-  })
-  console.log(res.data.download_url)
-
-// @ts-ignore
-  const response = await fetch(res.data.download_url);
-
-  // TODO error handling
-  if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
-
-  const body = await response.text();
-  console.log(body)
-  return body
+  return await githubService.getRepoReadme(owner, repo)
 
 })
 
@@ -116,48 +90,46 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
   const streamPipeline = util.promisify(stream.pipeline);
 
 
-  const response = await fetch(asset.browser_download_url);
+  const response = await githubService.getAsset(asset.download_url)
 
-  if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
+  if (response) {
 
-  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name + "/"
-  console.log(assetDir)
+    const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name + "/"
+    console.log(assetDir)
 
-  if (!fs.existsSync(assetDir)){
-    fs.mkdirSync(assetDir, { recursive: true });
+    if (!fs.existsSync(assetDir)){
+      fs.mkdirSync(assetDir, { recursive: true });
+    }
+
+    const assetFile = assetDir + asset.name
+
+    await streamPipeline(response.body, fs.createWriteStream(assetFile));
+
+
+    if (asset.content_type == "application/zip" || asset.content_type == "application/x-zip-compressed") {
+
+
+    try {
+      await extract(assetFile, { dir: path.join(process.cwd(), assetDir) })
+      console.log('Extraction complete')
+
+
+      } catch (err) {
+      // handle any errors
+      console.log(err)
+        return false
+      }
+    } else return false
+
   }
+  return true
 
-  const assetFile = assetDir + asset.name
-
-  await streamPipeline(response.body, fs.createWriteStream(assetFile));
-
-
-  if (asset.content_type == "application/zip" || asset.content_type == "application/x-zip-compressed") {
-
-
-  try {
-		await extract(assetFile, { dir: path.join(process.cwd(), assetDir) })
-		console.log('Extraction complete')
-
-
-	  } catch (err) {
-		// handle any errors
-		console.log(err)
-	  }
-  }
 
 } )
 
 ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
   console.log(event)
-	var res = await octokit.request('GET /repos/{owner}/{repo}/releases/latest', {
-		owner: owner,
-		repo: repo
-	  })
-
-
-    console.log(res.data.assets)
-    return res.data.assets
+  return await githubService.getRepoReleases(owner, repo)
 })
 
 
