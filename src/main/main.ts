@@ -90,7 +90,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
   const streamPipeline = util.promisify(stream.pipeline);
 
 
-  const response = await githubService.getAsset(asset.download_url)
+  const response = await githubService.getAsset(asset.browser_download_url)
 
   if (response) {
 
