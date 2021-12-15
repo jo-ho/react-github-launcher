@@ -15,7 +15,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
   const [assetExistsModalOpen, setAssetExistsModalOpen] = useState(false)
   const [downloadBtnDisabled, setDownloadBtnDisabled] = useState(false)
   const [downloadDoneAlertShown, setDownloadDoneAlertShown] = useState(false)
-  const [downloadPath, setDownloadPath] = useState("")
+  const [downloadDoneAlertMsg, setDownloadDoneAlertMsg] = useState("")
 
 	const onClickDownloadAsset = async () => {
 		if (
@@ -39,15 +39,18 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
   const downloadCurrentAsset = async () => {
     setDownloadBtnDisabled(true)
 
-		await window.api.downloadAsset(
+		if (await window.api.downloadAsset(
       props.currentRepo.owner,
       props.currentRepo.name,
       props.currentAsset
-		);
+		)) {
     setDownloadBtnDisabled(false)
     setDownloadDoneAlertShown(true)
-    setDownloadPath(globalThis.app.gamesFolderPath + props.currentRepo.owner + '/' + props.currentRepo.name + '/')
+    setDownloadDoneAlertMsg(" Download done, saved to " + globalThis.app.gamesFolderPath + props.currentRepo.owner + '/' + props.currentRepo.name + '/')
+    } else {
+      setDownloadDoneAlertMsg("Error occur when download/extracting the asset")
 
+    }
 	};
 
 	return (
@@ -111,7 +114,7 @@ setDownloadDoneAlertShown(false)}
           color="info"
           className="text-break small my-2"
         >
-          Download done, saved to {downloadPath}
+          {downloadDoneAlertMsg}
         </Alert>
 
     </CardBody>
