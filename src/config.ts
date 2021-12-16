@@ -9,8 +9,8 @@ type globalAppVariables = {
 
 // set the values.
 globalThis.app = {
-	repoJsonPath: './repos.json',
-	gamesFolderPath: './games/'
+	repoJsonPath: 'repos.json',
+	gamesFolderPath: 'games'
 	// more can go here.
 };
 

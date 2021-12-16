@@ -44,13 +44,15 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
       props.currentRepo.name,
       props.currentAsset
 		)) {
-    setDownloadBtnDisabled(false)
-    setDownloadDoneAlertShown(true)
+
     setDownloadDoneAlertMsg(" Download done, saved to " + globalThis.app.gamesFolderPath + props.currentRepo.owner + '/' + props.currentRepo.name + '/')
     } else {
       setDownloadDoneAlertMsg("Error occur when download/extracting the asset")
 
+
     }
+    setDownloadBtnDisabled(false)
+    setDownloadDoneAlertShown(true)
 	};
 
 	return (

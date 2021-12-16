@@ -48,7 +48,7 @@ ipcMain.handle('on-choose-exe-request', async (event) => {
 
 ipcMain.handle('renderer-init-done', async (event) => {
   console.log(event)
-  const repos: Repo[]  = JSON.parse(fs.readFileSync( process.cwd() + '/repos.json', 'utf-8'))
+  const repos: Repo[]  = JSON.parse(fs.readFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), 'utf-8'))
   return repos
 });
 
@@ -73,7 +73,9 @@ ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset
   console.log(name)
   console.log(owner)
 
-  const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/"  + path.parse(asset.name).name
+
+
+  const assetDir = path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name, path.parse(asset.name).name)
   if (!fs.existsSync(assetDir)){
     return false
   } else return true
@@ -94,14 +96,17 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
   if (response) {
 
-    const assetDir = globalThis.app.gamesFolderPath + owner + "/" + name + "/" + path.parse(asset.name).name + "/"
+
+    const assetDir = path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name, path.parse(asset.name).name)
     console.log(assetDir)
 
     if (!fs.existsSync(assetDir)){
       fs.mkdirSync(assetDir, { recursive: true });
     }
 
-    const assetFile = assetDir + asset.name
+    const assetFile = path.join(assetDir, asset.name)
+
+    console.log(assetFile)
 
     await streamPipeline(response.body, fs.createWriteStream(assetFile));
 
@@ -110,7 +115,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
 
     try {
-      await extract(assetFile, { dir: path.join(process.cwd(), assetDir) })
+      await extract(assetFile, { dir: assetDir })
       console.log('Extraction complete')
 
 
@@ -136,7 +141,8 @@ ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
 ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
   console.log(event)
   console.log(repos)
-  fs.writeFileSync( globalThis.app.repoJsonPath, JSON.stringify(repos, null, 2));
+  console.log(path.join(process.cwd(), globalThis.app.repoJsonPath))
+  fs.writeFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), JSON.stringify(repos, null, 2));
 
 })
 
