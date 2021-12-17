@@ -24,7 +24,7 @@ import extract from 'extract-zip';
 import '../config'
 import { execFile } from 'child_process';
 import GithubService from './services/github_service';
-
+const fileType =  require('file-type');
 const githubService = new GithubService()
 
 
@@ -111,7 +111,9 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
     await streamPipeline(response.body, fs.createWriteStream(assetFile));
 
 
-    if (asset.content_type == "application/zip" || asset.content_type == "application/x-zip-compressed") {
+    const assetFileType = await fileType.fromFile(assetFile)
+
+    if (assetFileType == "application/zip" || assetFileType == "application/x-zip-compressed") {
 
 
     try {
@@ -124,7 +126,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
       console.log(err)
         return false
       }
-    } else return false
+    }
 
   }
   return true

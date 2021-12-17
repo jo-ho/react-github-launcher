@@ -239,6 +239,7 @@
     "electron-reload": "^2.0.0-alpha.1",
     "electron-updater": "^4.3.9",
     "extract-zip": "^2.0.1",
+    "file-type": "^16.5.3",
     "history": "4.x.x",
     "node-fetch": "^2.6.6",
     "react": "^17.0.2",
