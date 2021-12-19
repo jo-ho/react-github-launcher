@@ -137,7 +137,7 @@ export default class App extends Component<{}, AppState> {
 				/>
 
 				<DeleteModal deleteCurrentRepo={this.deleteCurrentRepo} />
-				<Row noGutters>
+				<Row className='g-0'>
 					<Col xs="2">
 						<Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
 					</Col>

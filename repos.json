@@ -188,7 +188,7 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 127280320,
-        "download_count": 1421,
+        "download_count": 1428,
         "created_at": "2021-07-11T21:03:45Z",
         "updated_at": "2021-07-11T21:03:48Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-amd64-v0.9.14.AppImage"
@@ -222,7 +222,7 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 129090843,
-        "download_count": 947,
+        "download_count": 950,
         "created_at": "2021-08-12T00:00:33Z",
         "updated_at": "2021-08-12T00:02:15Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-macos-v0.9.14.dmg"
@@ -256,7 +256,7 @@
         "content_type": "application/x-zip-compressed",
         "state": "uploaded",
         "size": 125237853,
-        "download_count": 1533,
+        "download_count": 1540,
         "created_at": "2021-07-17T04:04:00Z",
         "updated_at": "2021-07-17T04:06:04Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-win32-0.9.14.zip"
@@ -290,7 +290,7 @@
         "content_type": "application/x-zip-compressed",
         "state": "uploaded",
         "size": 125098394,
-        "download_count": 4460,
+        "download_count": 4479,
         "created_at": "2021-07-11T22:59:42Z",
         "updated_at": "2021-07-11T23:01:45Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-win64-0.9.14.zip"

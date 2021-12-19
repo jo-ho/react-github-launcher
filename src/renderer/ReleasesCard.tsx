@@ -79,7 +79,6 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
         toggle={onDropdownClick}
         isOpen={isOpen}
         size="sm"
-        ge
       >
         <DropdownToggle block caret className="text-break">
           {props.currentAsset !== null ? (
@@ -91,7 +90,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
         <DropdownMenu dark>
           {props.currentRepo.assets.map((element) => {
             return (
-              <DropdownItem onClick={() => props.setCurrentAsset(element)}>
+              <DropdownItem key={element.id} onClick={() => props.setCurrentAsset(element)}>
                 {element.browser_download_url}
               </DropdownItem>
             );
