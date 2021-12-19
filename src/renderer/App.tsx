@@ -17,6 +17,7 @@ interface AppState {
 	repos: Repo[];
 	currentRepo: Repo;
 	currentAsset: any;
+	getReleasesTimerId: any;
 }
 
 export default class App extends Component<{}, AppState> {
@@ -25,7 +26,8 @@ export default class App extends Component<{}, AppState> {
 		this.state = {
 			repos: [],
 			currentRepo: {} as Repo,
-			currentAsset: null
+			currentAsset: null,
+			getReleasesTimerId: null
 		};
 	}
 
@@ -37,7 +39,7 @@ export default class App extends Component<{}, AppState> {
 		});
 	}
 
-	onTabClick = (repo: Repo) => {
+	onTabClick = async (repo: Repo) => {
 		this.setState({
 			currentRepo: repo
 		});
@@ -89,6 +91,30 @@ export default class App extends Component<{}, AppState> {
 		});
 	};
 
+	updateCurrentRepoReleases = async () => {
+		if (this.state.getReleasesTimerId) return;
+
+		var apiCall = async () => {
+			try {
+				var assets = await window.api.getRepoReleasesFromGitHub(
+					this.state.currentRepo.owner,
+					this.state.currentRepo.name
+				);
+				this.state.currentRepo.assets = assets;
+				this.setState({});
+				window.api.saveReposToFile(this.state.repos);
+			} catch (err) {}
+			this.setState({
+				getReleasesTimerId: null
+			});
+		};
+		this.setState({
+			getReleasesTimerId: setTimeout(function() {
+				apiCall();
+			}, 5000)
+		});
+	};
+
 	deleteCurrentRepo = () => {
 		this.setState(
 			{
@@ -136,6 +162,7 @@ export default class App extends Component<{}, AppState> {
 											currentAsset={this.state.currentAsset}
 											currentRepo={this.state.currentRepo}
 											setCurrentAsset={this.setAsset}
+											updateCurrentRepoReleases={this.updateCurrentRepoReleases}
 										/>
 									</NavItem>
 								) : (

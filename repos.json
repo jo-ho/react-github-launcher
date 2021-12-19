@@ -34,7 +34,7 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 25016996,
-        "download_count": 856,
+        "download_count": 905,
         "created_at": "2021-07-31T23:31:48Z",
         "updated_at": "2021-07-31T23:31:55Z",
         "browser_download_url": "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3-osx.dmg"
@@ -68,7 +68,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 24063273,
-        "download_count": 3999,
+        "download_count": 4286,
         "created_at": "2021-07-31T23:30:31Z",
         "updated_at": "2021-07-31T23:30:32Z",
         "browser_download_url": "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3-win.zip"
@@ -102,7 +102,7 @@
         "content_type": "application/gzip",
         "state": "uploaded",
         "size": 25107780,
-        "download_count": 1332,
+        "download_count": 1427,
         "created_at": "2021-07-31T23:29:23Z",
         "updated_at": "2021-07-31T23:29:25Z",
         "browser_download_url": "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3.tar.gz"
@@ -145,7 +145,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 12229797,
-        "download_count": 792,
+        "download_count": 813,
         "created_at": "2020-03-08T18:24:57Z",
         "updated_at": "2020-03-08T18:24:57Z",
         "browser_download_url": "https://github.com/NetHack/NetHack/releases/download/NetHack-3.6.6_Released/NetHack-3.6.6_Released.x86.zip"
@@ -188,7 +188,7 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 127280320,
-        "download_count": 1377,
+        "download_count": 1413,
         "created_at": "2021-07-11T21:03:45Z",
         "updated_at": "2021-07-11T21:03:48Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-amd64-v0.9.14.AppImage"
@@ -222,7 +222,7 @@
         "content_type": "application/octet-stream",
         "state": "uploaded",
         "size": 129090843,
-        "download_count": 927,
+        "download_count": 945,
         "created_at": "2021-08-12T00:00:33Z",
         "updated_at": "2021-08-12T00:02:15Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-macos-v0.9.14.dmg"
@@ -256,7 +256,7 @@
         "content_type": "application/x-zip-compressed",
         "state": "uploaded",
         "size": 125237853,
-        "download_count": 1460,
+        "download_count": 1518,
         "created_at": "2021-07-17T04:04:00Z",
         "updated_at": "2021-07-17T04:06:04Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-win32-0.9.14.zip"
@@ -290,7 +290,7 @@
         "content_type": "application/x-zip-compressed",
         "state": "uploaded",
         "size": 125098394,
-        "download_count": 4317,
+        "download_count": 4429,
         "created_at": "2021-07-11T22:59:42Z",
         "updated_at": "2021-07-11T23:01:45Z",
         "browser_download_url": "https://github.com/endless-sky/endless-sky/releases/download/v0.9.14/endless-sky-win64-0.9.14.zip"
@@ -333,7 +333,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 5593600,
-        "download_count": 163,
+        "download_count": 176,
         "created_at": "2021-08-30T02:57:16Z",
         "updated_at": "2021-08-30T02:57:17Z",
         "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-i686-win-msvc-static.exe"
@@ -367,7 +367,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 10949808,
-        "download_count": 99,
+        "download_count": 107,
         "created_at": "2021-08-30T02:57:05Z",
         "updated_at": "2021-08-30T02:57:06Z",
         "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-lin-gcc-static"
@@ -401,7 +401,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 10535528,
-        "download_count": 41,
+        "download_count": 44,
         "created_at": "2021-08-30T02:59:05Z",
         "updated_at": "2021-08-30T02:59:07Z",
         "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-mac-gcc-static"
@@ -435,7 +435,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 5880832,
-        "download_count": 288,
+        "download_count": 300,
         "created_at": "2021-08-30T02:57:43Z",
         "updated_at": "2021-08-30T02:57:44Z",
         "browser_download_url": "https://github.com/The-Powder-Toy/The-Powder-Toy/releases/download/v96.2.350/powder-v96.2.350-x86_64-win-msvc-static.exe"
