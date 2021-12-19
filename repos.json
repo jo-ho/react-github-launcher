@@ -145,7 +145,7 @@
         "content_type": "application/zip",
         "state": "uploaded",
         "size": 12229797,
-        "download_count": 813,
+        "download_count": 814,
         "created_at": "2020-03-08T18:24:57Z",
         "updated_at": "2020-03-08T18:24:57Z",
         "browser_download_url": "https://github.com/NetHack/NetHack/releases/download/NetHack-3.6.6_Released/NetHack-3.6.6_Released.x86.zip"

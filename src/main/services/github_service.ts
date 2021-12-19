@@ -13,18 +13,18 @@ export default class GithubService {
       repo: repo,
     })
 
-    console.log(res)
+
     return res.status == 200
   }
 
   getRepoReadme = async (owner: string, repo: string) : Promise<string>  => {
 
-    console.log("getRepoReadme")
+
     let res = await octokit.request('GET /repos/{owner}/{repo}/readme', {
       owner: owner,
       repo: repo,
     })
-    console.log("res", res)
+
 
     if (res.status != 200) return ""
 
@@ -56,7 +56,7 @@ export default class GithubService {
       if (res.status != 200) return []
 
 
-      console.log(res.data.assets)
+
       return res.data.assets
   }
 }

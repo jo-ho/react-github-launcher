@@ -38,40 +38,39 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle('on-choose-exe-request', async (event) => {
-  console.log(event)
+ipcMain.handle('on-choose-exe-request', async (_event) => {
  return dialog.showOpenDialog({ properties: ['openFile'] })
 
 
 
 });
 
-ipcMain.handle('renderer-init-done', async (event) => {
-  console.log(event)
+ipcMain.handle('renderer-init-done', async (_event) => {
+
   const repos: Repo[]  = JSON.parse(fs.readFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), 'utf-8'))
   return repos
 });
 
-ipcMain.handle('on-get-repo', async (event, owner, repo) => {
-  console.log(event)
+ipcMain.handle('on-get-repo', async (_event, owner, repo) => {
+
 
   return await githubService.repoExists(owner, repo)
 
 });
 
 
-ipcMain.handle('on-add-repo', async (event, owner, repo) => {
-  console.log(event)
+ipcMain.handle('on-add-repo', async (_event, owner, repo) => {
+
 
   return await githubService.getRepoReadme(owner, repo)
 
 });
 
-ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset) => {
-  console.log(event)
-  console.log(asset)
-  console.log(name)
-  console.log(owner)
+ipcMain.handle('on-check-asset-exists-request', async (_event, owner, name, asset) => {
+
+
+
+
 
 
 
@@ -82,11 +81,11 @@ ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset
 
 });
 
-ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) => {
-  console.log(event)
-  console.log(asset)
-  console.log(name)
-  console.log(owner)
+ipcMain.handle('on-download-asset-request', async (_event, owner, name, asset) => {
+
+
+
+
 
 
   const streamPipeline = util.promisify(stream.pipeline);
@@ -98,7 +97,7 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
 
     const assetDir = path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name, path.parse(asset.name).name)
-    console.log(assetDir)
+
 
     if (!fs.existsSync(assetDir)){
       fs.mkdirSync(assetDir, { recursive: true });
@@ -106,26 +105,26 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
     const assetFile = path.join(assetDir, asset.name)
 
-    console.log(assetFile)
+
 
     await streamPipeline(response.body, fs.createWriteStream(assetFile));
 
 
     const assetFileType = await fileType.fromFile(assetFile)
 
-    console.log(assetFileType)
+
 
     if (assetFileType?.mime == "application/zip" ) {
 
 
     try {
       await extract(assetFile, { dir: assetDir })
-      console.log('Extraction complete')
+
 
 
       } catch (err) {
       // handle any errors
-      console.log(err)
+
         return false
       }
     }
@@ -136,24 +135,24 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
 } );
 
-ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
-  console.log(event)
+ipcMain.handle('on-get-releases-request', async (_event, owner, repo) => {
+
   return await githubService.getRepoReleases(owner, repo)
 });
 
 
-ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
-  console.log(event)
-  console.log(repos)
-  console.log(path.join(process.cwd(), globalThis.app.repoJsonPath))
+ipcMain.handle('on-save-repos-to-file-request', async (_event, repos) => {
+
+
+
   fs.writeFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), JSON.stringify(repos, null, 2));
 
 });
 
-ipcMain.handle('on-launch-exe-request', async (event, path) => {
+ipcMain.handle('on-launch-exe-request', async (_event, path) => {
 
-  console.log(event)
-  console.log("launch", path)
+
+
   execFile(path)
 });
 

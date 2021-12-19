@@ -25,7 +25,7 @@ export const EditModal = (props: EditModalProps) => {
   }, [])
 
   const handleContentChange = (e : React.FormEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value)
+
     setContent(e.currentTarget.value)
 
   }

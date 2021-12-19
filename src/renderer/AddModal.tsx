@@ -25,8 +25,8 @@ export const AddModal = (props: AddModalProps) => {
 	const [ errorMsg, setErrorMsg ] = useState('');
 
 	useEffect(() => {
-		window.api.onShowAddModalRequested((event, addAsRepo) => {
-			console.log(event);
+		window.api.onShowAddModalRequested((_event, addAsRepo) => {
+
 			setAddAsRepo(addAsRepo);
 			setIsOpen(true);
 		});
@@ -48,30 +48,30 @@ export const AddModal = (props: AddModalProps) => {
 				await window.api.getRepo(ownerName, repoName);
 
 				try {
-          console.log("before readme")
+
 					var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
-          console.log(readme)
+
 					newRepo.content = readme;
 				} catch (error) {
-					console.log(error, 'Readme not found');
+
 				} finally {
 					try {
 						var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
 						newRepo.assets = assets;
 
-						console.log(assets);
+
 						setIsOpen(false);
 						props.addNewRepo(newRepo);
 					} catch (error) {
 						setErrorMsg('Releases not found');
 
-						console.log(error, 'Releases not found');
+
 					}
 				}
 			} catch (error) {
 				setErrorMsg('repo not found');
 
-				console.log(error, 'repo not found');
+
 			}
 		} else {
 			setIsOpen(false);

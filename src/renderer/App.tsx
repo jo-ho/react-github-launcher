@@ -51,7 +51,7 @@ export default class App extends Component<{}, AppState> {
 			});
 		}
 
-		console.log(repo);
+
 	};
 
 	addNewRepo = (repo: Repo) => {
@@ -60,14 +60,14 @@ export default class App extends Component<{}, AppState> {
 				repos: [ ...this.state.repos, repo ]
 			},
 			() => {
-				console.log(this.state.repos);
+
 				window.api.saveReposToFile(this.state.repos);
 			}
 		);
 	};
 
 	setCurrentRepoContent = (content: string) => {
-		console.log(content);
+
 		this.state.currentRepo.content = content;
 		window.api.saveReposToFile(this.state.repos);
 	};
@@ -81,12 +81,12 @@ export default class App extends Component<{}, AppState> {
 	setCurrentPathToExe = async () => {
 		window.api.chooseExeFile().then((result) => {
 			if (!result.canceled) {
-				console.log(result.filePaths);
+
 				this.state.currentRepo.pathToExe = result.filePaths[0];
 				// force update of pathToExe
 				this.setState({});
 				window.api.saveReposToFile(this.state.repos);
-				console.log(this.state.currentRepo.pathToExe);
+
 			}
 		});
 	};
