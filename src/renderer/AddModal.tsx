@@ -48,7 +48,9 @@ export const AddModal = (props: AddModalProps) => {
 				await window.api.getRepo(ownerName, repoName);
 
 				try {
+          console.log("before readme")
 					var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
+          console.log(readme)
 					newRepo.content = readme;
 				} catch (error) {
 					console.log(error, 'Readme not found');

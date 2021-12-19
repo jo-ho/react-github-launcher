@@ -24,8 +24,8 @@ import extract from 'extract-zip';
 import '../config'
 import { execFile } from 'child_process';
 import GithubService from './services/github_service';
-const fileType =  require('file-type');
-const githubService = new GithubService()
+import fileType from 'file-type';
+const githubService = new GithubService();
 
 
 export default class AppUpdater {
@@ -34,7 +34,7 @@ export default class AppUpdater {
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
-}
+};
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -44,7 +44,7 @@ ipcMain.handle('on-choose-exe-request', async (event) => {
 
 
 
-})
+});
 
 ipcMain.handle('renderer-init-done', async (event) => {
   console.log(event)
@@ -57,7 +57,7 @@ ipcMain.handle('on-get-repo', async (event, owner, repo) => {
 
   return await githubService.repoExists(owner, repo)
 
-})
+});
 
 
 ipcMain.handle('on-add-repo', async (event, owner, repo) => {
@@ -65,7 +65,7 @@ ipcMain.handle('on-add-repo', async (event, owner, repo) => {
 
   return await githubService.getRepoReadme(owner, repo)
 
-})
+});
 
 ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset) => {
   console.log(event)
@@ -80,7 +80,7 @@ ipcMain.handle('on-check-asset-exists-request', async (event, owner, name, asset
     return false
   } else return true
 
-})
+});
 
 ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) => {
   console.log(event)
@@ -113,7 +113,9 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
 
     const assetFileType = await fileType.fromFile(assetFile)
 
-    if (assetFileType == "application/zip" || assetFileType == "application/x-zip-compressed") {
+    console.log(assetFileType)
+
+    if (assetFileType?.mime == "application/zip" ) {
 
 
     try {
@@ -132,12 +134,12 @@ ipcMain.handle('on-download-asset-request', async (event, owner, name, asset) =>
   return true
 
 
-} )
+} );
 
 ipcMain.handle('on-get-releases-request', async (event, owner, repo) => {
   console.log(event)
   return await githubService.getRepoReleases(owner, repo)
-})
+});
 
 
 ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
@@ -146,26 +148,26 @@ ipcMain.handle('on-save-repos-to-file-request', async (event, repos) => {
   console.log(path.join(process.cwd(), globalThis.app.repoJsonPath))
   fs.writeFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), JSON.stringify(repos, null, 2));
 
-})
+});
 
 ipcMain.handle('on-launch-exe-request', async (event, path) => {
 
   console.log(event)
   console.log("launch", path)
   execFile(path)
-})
+});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
-}
+};
 
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDevelopment) {
   require('electron-debug')();
-}
+};
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');

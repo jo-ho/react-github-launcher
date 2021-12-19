@@ -46,14 +46,14 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
       props.currentAsset
 		)) {
 
-    setDownloadDoneAlertMsg(" Download done, saved to " + globalThis.app.gamesFolderPath + "/" + props.currentRepo.owner + '/' + props.currentRepo.name + '/')
+    setDownloadDoneAlertMsg(" Download done, saved to " + globalThis.app.gamesFolderPath + "/" + props.currentRepo.owner + '/' + props.currentRepo.name + '/');
     } else {
-      setDownloadDoneAlertMsg("Error occur when download/extracting the asset")
+      setDownloadDoneAlertMsg("Error occur when download/extracting the asset");
 
 
     }
-    setDownloadBtnDisabled(false)
-    setDownloadDoneAlertShown(true)
+    setDownloadBtnDisabled(false);
+    setDownloadDoneAlertShown(true);
 	};
 
 

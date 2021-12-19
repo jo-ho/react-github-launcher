@@ -1,5 +1,7 @@
 import { Octokit } from '@octokit/core';
-const fetch = require('node-fetch')
+// @ts-ignore
+import fetch from 'node-fetch';
+
 
 const octokit = new Octokit()
 
@@ -16,10 +18,13 @@ export default class GithubService {
   }
 
   getRepoReadme = async (owner: string, repo: string) : Promise<string>  => {
+
+    console.log("getRepoReadme")
     let res = await octokit.request('GET /repos/{owner}/{repo}/readme', {
       owner: owner,
       repo: repo,
     })
+    console.log("res", res)
 
     if (res.status != 200) return ""
 
@@ -31,7 +36,6 @@ export default class GithubService {
     if (!response.ok) return ""
 
     const body = await response.text();
-    console.log(body)
 
     return body
   }
