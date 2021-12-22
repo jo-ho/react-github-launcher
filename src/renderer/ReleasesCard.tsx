@@ -6,7 +6,6 @@ interface ReleasesCardProps {
   currentAsset: any;
   currentRepo: Repo;
   setCurrentAsset: (asset: any) => void;
-  updateCurrentRepoReleases: () => void;
 }
 
 export const ReleasesCard = (props: ReleasesCardProps) => {
@@ -57,10 +56,6 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
 	};
 
 
-  const onDropdownClick = async () => {
-    setIsOpen(!isOpen)
-    props.updateCurrentRepoReleases()
-  }
 
 	return (
     <Card className="bg-dark border-0">
@@ -76,7 +71,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
     </CardTitle>
     <CardBody>
       <Dropdown
-        toggle={onDropdownClick}
+        toggle={() => setIsOpen(!isOpen)}
         isOpen={isOpen}
         size="sm"
       >
