@@ -39,7 +39,7 @@ export default class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.handle('on-choose-exe-request', async (_event) => {
- return dialog.showOpenDialog({ properties: ['openFile'] })
+ return dialog.showOpenDialog({ properties: ['openFile'], defaultPath: process.cwd() })
 
 
 

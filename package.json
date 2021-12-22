@@ -31,8 +31,9 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "ReactGitHubLauncher",
+    "appId": "org-jo-ho.ReactGitHubLauncher",
+    "artifactName": "react-github-launcher.${ext}",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
