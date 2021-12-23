@@ -39,34 +39,26 @@ export default class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.handle('on-choose-exe-request', async (_event, owner, name) => {
-
   if (owner && name) {
     return dialog.showOpenDialog({ properties: ['openFile'], defaultPath: path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name)})
-
   } else return  dialog.showOpenDialog({ properties: ['openFile']})
-
-
 
 });
 
 ipcMain.handle('renderer-init-done', async (_event) => {
-
   const repos: Repo[]  = JSON.parse(fs.readFileSync( path.join(process.cwd(), globalThis.app.repoJsonPath), 'utf-8'))
   return repos
 });
 
-ipcMain.handle('on-get-repo', async (_event, owner, repo) => {
-
-
-  return await githubService.repoExists(owner, repo)
-
+ipcMain.handle('on-get-repo', async (_event, owner, name) => {
+  return await githubService.repoExists(owner, name)
 });
 
 
-ipcMain.handle('on-add-repo', async (_event, owner, repo) => {
+ipcMain.handle('on-add-repo', async (_event, owner, name) => {
 
 
-  return await githubService.getRepoReadme(owner, repo)
+  return await githubService.getRepoReadme(owner, name)
 
 });
 
@@ -87,21 +79,12 @@ ipcMain.handle('on-check-asset-exists-request', async (_event, owner, name, asse
 
 ipcMain.handle('on-download-asset-request', async (_event, owner, name, asset) => {
 
-
-
-
-
-
   const streamPipeline = util.promisify(stream.pipeline);
-
 
   const response = await githubService.getAsset(asset.browser_download_url)
 
   if (response) {
-
-
     const assetDir = path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name, path.parse(asset.name).name)
-
 
     if (!fs.existsSync(assetDir)){
       fs.mkdirSync(assetDir, { recursive: true });
@@ -109,26 +92,16 @@ ipcMain.handle('on-download-asset-request', async (_event, owner, name, asset) =
 
     const assetFile = path.join(assetDir, asset.name)
 
-
-
     await streamPipeline(response.body, fs.createWriteStream(assetFile));
 
-
     const assetFileType = await fileType.fromFile(assetFile)
-
-
 
     if (assetFileType?.mime == "application/zip" ) {
 
 
     try {
       await extract(assetFile, { dir: assetDir })
-
-
-
       } catch (err) {
-      // handle any errors
-
         return false
       }
     }
@@ -136,12 +109,11 @@ ipcMain.handle('on-download-asset-request', async (_event, owner, name, asset) =
   }
   return true
 
-
 } );
 
-ipcMain.handle('on-get-releases-request', async (_event, owner, repo) => {
+ipcMain.handle('on-get-releases-request', async (_event, owner, name) => {
 
-  return await githubService.getRepoReleases(owner, repo)
+  return await githubService.getRepoReleases(owner, name)
 });
 
 
@@ -154,9 +126,6 @@ ipcMain.handle('on-save-repos-to-file-request', async (_event, repos) => {
 });
 
 ipcMain.handle('on-launch-exe-request', async (_event, path) => {
-
-
-
   execFile(path)
 });
 

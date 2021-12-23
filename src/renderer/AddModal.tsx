@@ -18,8 +18,8 @@ interface AddModalProps {
 }
 
 export const AddModal = (props: AddModalProps) => {
-	const [ repoName, setRepoName ] = useState('');
-	const [ ownerName, setOwnerName ] = useState('');
+	const [ name, setName ] = useState('');
+	const [ owner, setOwner ] = useState('');
 	const [ isOpen, setIsOpen ] = useState(false);
 	const [ addAsRepo, setAddAsRepo ] = useState(false);
 	const [ errorMsg, setErrorMsg ] = useState('');
@@ -38,8 +38,8 @@ export const AddModal = (props: AddModalProps) => {
 
 		let newRepo: Repo = {
       id: uuidv4(),
-			name: repoName,
-			owner: addAsRepo ? ownerName : "",
+			name: name,
+			owner: addAsRepo ? owner : "",
 			content: '',
 			assets: [],
 			pathToExe: '',
@@ -47,18 +47,18 @@ export const AddModal = (props: AddModalProps) => {
 
 		if (addAsRepo) {
 			try {
-				await window.api.getRepo(ownerName, repoName);
+				await window.api.getRepo(owner, name);
 
 				try {
 
-					var readme = await window.api.getRepoInfoFromGitHub(ownerName, repoName);
+					var readme = await window.api.getRepoInfoFromGitHub(owner, name);
 
 					newRepo.content = readme;
 				} catch (error) {
 
 				} finally {
 					try {
-						var assets = await window.api.getRepoReleasesFromGitHub(ownerName, repoName);
+						var assets = await window.api.getRepoReleasesFromGitHub(owner, name);
 						newRepo.assets = assets;
 
 
@@ -90,15 +90,15 @@ export const AddModal = (props: AddModalProps) => {
 					{addAsRepo ? (
 						<InputGroup size="sm">
 							<InputGroupText>Owner:</InputGroupText>
-							<Input onChange={(e) => setOwnerName(e.currentTarget.value)} />
+							<Input onChange={(e) => setOwner(e.currentTarget.value)} />
 						</InputGroup>
 					) : (
 						""
 					)}
 
 					<InputGroup size="sm">
-						<InputGroupText>Repo:</InputGroupText>
-						<Input onChange={(e) => setRepoName(e.currentTarget.value)} />
+						<InputGroupText>Name:</InputGroupText>
+						<Input onChange={(e) => setName(e.currentTarget.value)} />
 					</InputGroup>
 					<Alert toggle={() => setErrorMsg('')} isOpen={errorMsg !== ''} color="danger">
 						{errorMsg}
