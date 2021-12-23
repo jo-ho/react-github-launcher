@@ -27,6 +27,12 @@
   overflow-y: auto;
 }
 
+.sidebar {
+  height: 100vh;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+}
+
 .container-fluid {
   margin: 0;
   padding: 0;

@@ -8,7 +8,7 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
 	return (
-		<Nav vertical pills className="bg-dark  min-vh-100  ">
+		<Nav vertical pills className="bg-dark  min-vh-100 sidebar ">
 			{props.repos.map((element) => {
 				return (
 					<NavItem key={element.id} >
