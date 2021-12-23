@@ -28,12 +28,20 @@ export const AddModal = (props: AddModalProps) => {
 		window.api.onShowAddModalRequested((_event, addAsRepo) => {
 
 			setAddAsRepo(addAsRepo);
-			setIsOpen(true);
+			resetFieldsOnExit(true);
 		});
 	}, []);
 
 
+  const resetFieldsOnExit = (isOpen: boolean) => {
+    setIsOpen(isOpen)
+    setName("")
+    setOwner("")
+    setErrorMsg("")
+  }
+
 	const handleOnClickConfirm = async () => {
+
 
 
 		let newRepo: Repo = {
@@ -47,12 +55,14 @@ export const AddModal = (props: AddModalProps) => {
 
 		if (addAsRepo) {
 			try {
+        if (!name || !owner) {
+          setErrorMsg('All fields required');
+          return
+        }
 				await window.api.getRepo(owner, name);
 
 				try {
-
 					var readme = await window.api.getRepoInfoFromGitHub(owner, name);
-
 					newRepo.content = readme;
 				} catch (error) {
 
@@ -61,13 +71,10 @@ export const AddModal = (props: AddModalProps) => {
 						var assets = await window.api.getRepoReleasesFromGitHub(owner, name);
 						newRepo.assets = assets;
 
-
-						setIsOpen(false);
+						resetFieldsOnExit(false);
 						props.addNewRepo(newRepo);
 					} catch (error) {
 						setErrorMsg('Releases not found');
-
-
 					}
 				}
 			} catch (error) {
@@ -75,8 +82,14 @@ export const AddModal = (props: AddModalProps) => {
 
 
 			}
-		} else {
-			setIsOpen(false);
+		} else { // Custom add
+
+      if (!name) {
+        setErrorMsg('All fields required');
+        return
+      }
+
+			resetFieldsOnExit(false);
 			props.addNewRepo(newRepo);
 		}
 	};
@@ -98,7 +111,7 @@ export const AddModal = (props: AddModalProps) => {
 
 					<InputGroup size="sm">
 						<InputGroupText>Name:</InputGroupText>
-						<Input onChange={(e) => setName(e.currentTarget.value)} />
+						<Input  onChange={(e) => setName(e.currentTarget.value)} />
 					</InputGroup>
 					<Alert toggle={() => setErrorMsg('')} isOpen={errorMsg !== ''} color="danger">
 						{errorMsg}
