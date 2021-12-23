@@ -580,7 +580,7 @@
         "content_type": "application/gzip",
         "state": "uploaded",
         "size": 25107780,
-        "download_count": 1486,
+        "download_count": 1487,
         "created_at": "2021-07-31T23:29:23Z",
         "updated_at": "2021-07-31T23:29:25Z",
         "browser_download_url": "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3.tar.gz"
