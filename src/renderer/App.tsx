@@ -86,7 +86,7 @@ export default class App extends Component<{}, AppState> {
 	};
 
 	setCurrentPathToExe = async () => {
-		window.api.chooseExeFile().then((result) => {
+		window.api.chooseExeFile(this.state.currentRepo.owner, this.state.currentRepo.name).then((result) => {
 			if (!result.canceled) {
 
 				this.state.currentRepo.pathToExe = result.filePaths[0];

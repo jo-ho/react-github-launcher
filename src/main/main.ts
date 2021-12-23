@@ -38,8 +38,12 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle('on-choose-exe-request', async (_event) => {
- return dialog.showOpenDialog({ properties: ['openFile'], defaultPath: process.cwd() })
+ipcMain.handle('on-choose-exe-request', async (_event, owner, name) => {
+
+  if (owner && name) {
+    return dialog.showOpenDialog({ properties: ['openFile'], defaultPath: path.join(process.cwd(), globalThis.app.gamesFolderPath, owner, name)})
+
+  } else return  dialog.showOpenDialog({ properties: ['openFile']})
 
 
 

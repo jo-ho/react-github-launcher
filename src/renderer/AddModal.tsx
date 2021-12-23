@@ -34,10 +34,12 @@ export const AddModal = (props: AddModalProps) => {
 
 
 	const handleOnClickConfirm = async () => {
+
+
 		let newRepo: Repo = {
       id: uuidv4(),
 			name: repoName,
-			owner: ownerName,
+			owner: addAsRepo ? ownerName : "",
 			content: '',
 			assets: [],
 			pathToExe: '',

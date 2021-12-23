@@ -14,13 +14,13 @@ contextBridge.exposeInMainWorld('api', {
   onShowDeleteModalRequested: (callback) => {
     ipcRenderer.on('show-delete-modal', callback)
   },
-  getRepo: (owner, repo) => ipcRenderer.invoke("on-get-repo", owner, repo),
-  getRepoInfoFromGitHub: (owner, repo) => ipcRenderer.invoke('on-add-repo', owner, repo),
-  getRepoReleasesFromGitHub: (owner, repo) => ipcRenderer.invoke('on-get-releases-request', owner, repo),
+  getRepo: (owner, name) => ipcRenderer.invoke("on-get-repo", owner, name),
+  getRepoInfoFromGitHub: (owner, name) => ipcRenderer.invoke('on-add-repo', owner, name),
+  getRepoReleasesFromGitHub: (owner, name) => ipcRenderer.invoke('on-get-releases-request', owner, name),
   saveReposToFile: (repos) => ipcRenderer.invoke("on-save-repos-to-file-request", repos),
   checkAssetDirExists: (owner, name, asset) => ipcRenderer.invoke("on-check-asset-exists-request", owner, name, asset),
   downloadAsset: (owner, name, asset) => ipcRenderer.invoke("on-download-asset-request", owner, name, asset),
-  chooseExeFile: () => ipcRenderer.invoke("on-choose-exe-request"),
+  chooseExeFile: (owner, name) => ipcRenderer.invoke("on-choose-exe-request", owner, name),
   launchExeFile: (path) => ipcRenderer.invoke("on-launch-exe-request", path)
 
 
