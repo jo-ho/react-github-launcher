@@ -13,7 +13,7 @@ import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
 import { ReleasesCard } from './ReleasesCard';
 
-const updateReleasesInterval = 5000
+const updateReleasesInterval = 1000
 
 interface AppState {
 	repos: Repo[];
@@ -45,7 +45,10 @@ export default class App extends Component<{}, AppState> {
 		this.setState({
 			currentRepo: repo
 		}, () => {
-      this.updateCurrentRepoReleases()
+      if (this.state.currentRepo.assets.length > 0 ) {
+        this.updateCurrentRepoReleases()
+
+      }
     });
 
 		// reset currentAsset if selecting a different tab
