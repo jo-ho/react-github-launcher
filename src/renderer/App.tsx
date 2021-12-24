@@ -76,6 +76,7 @@ export default class App extends Component<{}, AppState> {
 	setCurrentRepoContent = (content: string) => {
 
 		this.state.currentRepo.content = content;
+    this.setState({})
 		window.api.saveReposToFile(this.state.repos);
 	};
 
