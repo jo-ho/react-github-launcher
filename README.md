@@ -15,6 +15,16 @@ Manage and launch github apps from one program.
 - Launch apps from the program
 - Edit description of apps 
 
+## Usage
+
+- File -> Add Repo
+- Enter owner and name, e.g. "angband", "angband"
+- Click "Add"
+- Select release from dropdown and download
+- Set app path with "Select exe"
+- Click "Launch"
+
+
 ## Development
 
 ### Starting Development
