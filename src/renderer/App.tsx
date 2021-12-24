@@ -103,7 +103,6 @@ export default class App extends Component<{}, AppState> {
 					this.state.currentRepo.owner,
 					this.state.currentRepo.name
 				);
-        console.log("test")
 				this.state.currentRepo.assets = assets;
 				this.setState({});
 				window.api.saveReposToFile(this.state.repos);
