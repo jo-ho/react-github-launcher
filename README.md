@@ -42,4 +42,4 @@ npm run package-win
 
 ## License
 
-MIT
+[MIT](https://github.com/jo-ho/react-github-launcher/blob/master/LICENSE)
