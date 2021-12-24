@@ -5,6 +5,8 @@ This app was bootstrapped by [electron-react-boilerplate](https://github.com/ele
 
 Manage and launch github apps from one program.
 
+![react-github-launcher](https://user-images.githubusercontent.com/27314018/147320877-6380cb29-7aeb-44c4-9ff5-6b5c722c9123.png)
+
 ## Features
 
 - Display and retrieve repo information, including its README 
