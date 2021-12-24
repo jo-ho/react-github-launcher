@@ -13,7 +13,7 @@ import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
 import { ReleasesCard } from './ReleasesCard';
 
-const updateReleasesInterval = 1000
+const updateReleasesInterval = 3000
 
 interface AppState {
 	repos: Repo[];
@@ -44,12 +44,7 @@ export default class App extends Component<{}, AppState> {
 	onTabClick = async (repo: Repo) => {
 		this.setState({
 			currentRepo: repo
-		}, () => {
-      if (this.state.currentRepo.assets.length > 0 ) {
-        this.updateCurrentRepoReleases()
-
-      }
-    });
+		});
 
 		// reset currentAsset if selecting a different tab
 		if (repo != this.state.currentRepo) {
@@ -108,6 +103,7 @@ export default class App extends Component<{}, AppState> {
 					this.state.currentRepo.owner,
 					this.state.currentRepo.name
 				);
+        console.log("test")
 				this.state.currentRepo.assets = assets;
 				this.setState({});
 				window.api.saveReposToFile(this.state.repos);
@@ -171,6 +167,7 @@ export default class App extends Component<{}, AppState> {
 											currentAsset={this.state.currentAsset}
 											currentRepo={this.state.currentRepo}
 											setCurrentAsset={this.setAsset}
+                      updateCurrentRepoReleases={this.updateCurrentRepoReleases}
 										/>
 									</NavItem>
 								) : (
