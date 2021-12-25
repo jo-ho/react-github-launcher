@@ -59,7 +59,7 @@ export const ReleasesCard = (props: ReleasesCardProps) => {
 
 	const onDropdownToggle = () => {
 		setIsOpen(!isOpen);
-		if (isOpen) props.updateCurrentRepoReleases();
+		if (!isOpen) props.updateCurrentRepoReleases();
 	};
 
 	useEffect(
