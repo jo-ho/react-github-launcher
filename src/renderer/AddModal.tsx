@@ -78,7 +78,7 @@ export const AddModal = (props: AddModalProps) => {
 					}
 				}
 			} catch (error) {
-				setErrorMsg('repo not found');
+				setErrorMsg('Repo not found, or github API rate limit exceeded');
 
 
 			}
