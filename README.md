@@ -25,6 +25,13 @@ Manage and launch github apps from one program.
 - Click "Launch"
 
 
+## Limitations
+### GitHub API rate limiting
+
+This app uses unauthenticated requests on GitHub api calls, which allows for up to 60 requests per hour.  These calls are executed when adding repos and clicking on releases dropdown (which is throttled).
+
+More info [here](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
+
 ## Development
 
 ### Starting Development
