@@ -8,10 +8,12 @@
   height:100%;
   overflow: hidden;
 }
+
 .btn {
   white-space:normal !important;
   word-wrap: break-word;
 }
+
 .actions {
   padding: 0;
 }
@@ -38,3 +40,20 @@
   padding: 0;
 }
 
+body, .modal-body, .form-control, .form-control:focus, .input-group-text, input, textarea {
+	background-color: rgb(43, 48, 51);
+	color: #e8eaed;
+	border-color: #414f46;
+	border-style: solid;
+	border-width: 1px;
+	font-family: 'Consolas';
+}
+
+.modal-header, .modal-footer {
+	background-color: rgb(38, 43, 46);
+	color: #e8eaed;
+	border-color: #414f46;
+	border-style: solid;
+	border-width: 1px;
+	font-family: 'Consolas';
+}

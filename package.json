@@ -98,9 +98,7 @@
     "type": "git",
     "url": "git+https://github.com/jo-ho/react-github-launcher.git"
   },
-
   "license": "MIT",
-
   "keywords": [
     "electron",
     "react",
@@ -230,6 +228,7 @@
     "react-router-dom": "^5.3.0",
     "reactstrap": "^9.0.1",
     "regenerator-runtime": "^0.13.9",
+    "rehype-raw": "^7.0.0",
     "remark-gfm": "^3.0.1",
     "upgrade": "^1.1.0",
     "uuid": "^8.3.2"

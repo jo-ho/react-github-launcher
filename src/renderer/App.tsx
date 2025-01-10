@@ -8,6 +8,7 @@ import '../config';
 import './App.css';
 import { EditModal } from './EditModal';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { DeleteModal } from './DeleteModal';
 import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
@@ -143,8 +144,8 @@ export default class App extends Component<{}, AppState> {
           <Col xs="2">
             <Sidebar repos={this.state.repos} onTabClick={this.onTabClick} />
           </Col>
-          <Col className="content" xs="8">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <Col className="content" xs="8" data-color-mode="dark">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw as any]}>
               {this.state.currentRepo.content}
             </ReactMarkdown>
           </Col>
