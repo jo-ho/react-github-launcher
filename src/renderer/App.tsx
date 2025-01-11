@@ -13,6 +13,7 @@ import { DeleteModal } from './DeleteModal';
 import { LaunchCard } from './LaunchCard';
 import { SelectExeCard } from './SelectExeCard';
 import { ReleasesCard } from './ReleasesCard';
+import { RefreshCard } from './RefreshCard';
 
 const updateReleasesInterval = 10000;
 
@@ -42,6 +43,9 @@ export default class App extends Component<{}, AppState> {
         repos: res,
       });
     });
+	this.setState({
+		lastTime: Date.now()
+	})
   }
 
   onTabClick = async (repo: Repo) => {
@@ -106,14 +110,35 @@ export default class App extends Component<{}, AppState> {
       } catch (err) {}
     };
 
-    var now = Date.now();
-    if (now - this.state.lastTime >= updateReleasesInterval) {
-      apiCall();
-      this.setState({
-        lastTime: now,
-      });
-    }
+	this.updateCanCallApi(apiCall)
   };
+
+  updateCurrentRepoReadme = (): boolean  => {
+    var apiCall = async () => {
+		try {
+		  var readme = await window.api.getRepoInfoFromGitHub(
+			this.state.currentRepo.owner,
+			this.state.currentRepo.name
+		  );
+		  this.state.currentRepo.content = readme;
+		  this.setState({});
+		} catch (err) {}
+	  };
+
+	  return this.updateCanCallApi(apiCall)
+  }
+
+  updateCanCallApi = (apiCall: () => void) : boolean => {
+	var now = Date.now();
+	var canRefresh = now - this.state.lastTime >= updateReleasesInterval
+	if (canRefresh) {
+		this.setState({
+			lastTime: now,
+		});
+		apiCall()
+	}
+	return canRefresh
+  }
 
   deleteCurrentRepo = () => {
     this.setState(
@@ -175,6 +200,12 @@ export default class App extends Component<{}, AppState> {
                 ) : (
                   ''
                 )}
+                <NavItem>
+                  <RefreshCard
+				  	currentRepo={this.state.currentRepo}
+                    updateCurrentRepoReadme={this.updateCurrentRepoReadme}
+                  />
+                </NavItem>
               </Nav>
             ) : (
               ''
