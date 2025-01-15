@@ -3,12 +3,9 @@ import { useEffect, useState } from 'react'
 
 
 interface DeleteModalProps {
+  repo: Repo
   deleteCurrentRepo: () => void
 }
-
-
-
-
 
 export const DeleteModal = (props: DeleteModalProps) => {
 
@@ -16,9 +13,10 @@ export const DeleteModal = (props: DeleteModalProps) => {
 
   useEffect(() => {
     window.api.onShowDeleteModalRequested(() => {
-      setIsOpen(true)
+		if (Object.keys(props.repo).length !== 0) setIsOpen(true)
     })
-  }, [])
+  }, 
+  [ props.repo ])
 
   const onClickConfirm = () => {
     setIsOpen(false)

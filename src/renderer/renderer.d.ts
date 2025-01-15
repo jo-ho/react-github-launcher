@@ -19,8 +19,6 @@ declare global {
     api: Api
   }
 
-
-
   interface Repo {
     id: string,
     owner: string,
@@ -29,8 +27,4 @@ declare global {
     assets: Array<any>
     pathToExe: string
   }
-
-
-
-
 }

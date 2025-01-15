@@ -159,11 +159,15 @@ export default class App extends Component<{}, AppState> {
       <Container fluid>
         <AddModal addNewRepo={this.addNewRepo} />
         <EditModal
+		  repo={this.state.currentRepo}
           content={this.state.currentRepo.content}
           setCurrentRepoContent={this.setCurrentRepoContent}
         />
 
-        <DeleteModal deleteCurrentRepo={this.deleteCurrentRepo} />
+        <DeleteModal 
+		  repo={this.state.currentRepo}
+		  deleteCurrentRepo={this.deleteCurrentRepo} 
+		/>
 
         <Row className="g-0">
           <Col xs="2">

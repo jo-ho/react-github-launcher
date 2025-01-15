@@ -3,40 +3,31 @@ import { useEffect, useState } from 'react'
 
 
 interface EditModalProps {
+  repo: Repo;
   content: string;
   setCurrentRepoContent: (content: string) => void
 }
 
 
-
 export const EditModal = (props: EditModalProps) => {
-
-
   const [content, setContent] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
-
-
-
   useEffect(() => {
     window.api.onShowEditModalRequested(() => {
-			setIsOpen(true)
+		if (Object.keys(props.repo).length !== 0) setIsOpen(true)
     })
-  }, [])
+  }, 
+  [ props.repo ])
 
   const handleContentChange = (e : React.FormEvent<HTMLInputElement>) => {
-
     setContent(e.currentTarget.value)
-
   }
 
   const onClickConfirm = () => {
     setIsOpen(false)
     props.setCurrentRepoContent(content)
   }
-
-
-
 
 	return (
 		<div>
